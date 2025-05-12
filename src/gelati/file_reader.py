@@ -18,8 +18,11 @@ def read_anzai(filepath):
             start_line = next(i for i, line in enumerate(lines) if "Data Start" in line) + 1
             df = pd.read_csv(filepath, skiprows=start_line,header=None,names=myheaders)
             
-            list_timestamp = df['"***DataNo.'].values * mydatatime
-            list_amp = df['Physics-Value***"'].apply(lambda x: x.strip("mm ")).values
+            # list_timestamp = float(df['"***DataNo.'].values * mydatatime)
+            # list_amp = float(df['Physics-Value***"'].apply(lambda x: x.strip("mm ")).values)
+            list_timestamp = (df['"***DataNo.'].values * mydatatime).astype(float)
+            list_amp = df['Physics-Value***"'].apply(lambda x: float(x.strip("mm "))).values
+
 
             return list_timestamp, list_amp
     except:

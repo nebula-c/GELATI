@@ -1,8 +1,7 @@
 import numpy as np
 from PyQt6 import QtWidgets
-# from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QFileDialog, QLabel
 from PyQt6.QtGui import QColor, QPixmap, QTextCharFormat, QTextCursor
-from PyQt6.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt, QPointF
 from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis
 from datetime import datetime
 import os,sys
@@ -16,8 +15,8 @@ from gelati import file_reader
 
 class Gelati_Monitor(QtWidgets.QMainWindow):
     filetype = None
-    list_time = None
-    list_amp = None
+    list_raw_time = None
+    list_raw_amp = None
 
     def __init__(self,):
         super().__init__()
@@ -106,12 +105,12 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
         self.axis_x_raw = QValueAxis()
         self.axis_x_raw.setTitleText("Time")
-        # self.axis_x_raw.setRange(0, 10)
+        # self.axis_x_raw.setRange(0, 121790)
         self.chart_raw.addAxis(self.axis_x_raw, Qt.AlignmentFlag.AlignBottom)
 
         self.axis_y_raw = QValueAxis()
         self.axis_y_raw.setTitleText("Value")
-        # self.axis_y_raw.setRange(0, 10)
+        # self.axis_y_raw.setRange(0, 100)
         self.chart_raw.addAxis(self.axis_y_raw, Qt.AlignmentFlag.AlignLeft)
         
         series_empty = QLineSeries()
@@ -143,25 +142,34 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.layout.setContentsMargins(0, 0, 0, 20)
         self.terminal_output.appendPlainText("You can find the full code here. https://github.com/nebula-c/GELATI (suchoi9709@gmail.com, Sungwoon Choi)")
         self.terminal_output.appendPlainText("")
-        self.terminal_output.setFixedHeight(100)  # 텍스트 영역의 고정 높이 설정
-
-
-
-        
+        self.terminal_output.setFixedHeight(100)
 
     def open_file_dialog(self,):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")
         if file_path:
             if self.filetype == "ANZAI":
-                list_time, list_amp = file_reader.read_anzai(file_path)
-                if list_time is not None and list_amp is not None:
+                self.list_raw_time, self.list_raw_amp = file_reader.read_anzai(file_path)
+                if self.list_raw_time is not None and self.list_raw_amp is not None:
                     self.terminal_output.appendPlainText("File {} is opened".format(file_path))
                 else:
                     self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
+                    return
             else:
                 self.print_terminal_colored("Undefined file type", color='#ff0000')
+                return
+            self.Show_chart()
+        else:
+            return
                 
-
+    def Show_chart(self,):
+        series_file = QLineSeries()
+        for x, y in zip(self.list_raw_time, self.list_raw_amp):
+            series_file.append(QPointF(float(x), float(y)))
+        self.chart_raw.addSeries(series_file)
+        series_file.attachAxis(self.axis_x_raw)
+        series_file.attachAxis(self.axis_y_raw)
+        self.axis_x_raw.setRange(min(self.list_raw_time),max(self.list_raw_time))
+        self.axis_y_raw.setRange(min(self.list_raw_amp),max(self.list_raw_amp))
 
     def print_terminal_colored(self, text, color="red"):
         cursor = self.terminal_output.textCursor()
