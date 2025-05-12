@@ -77,7 +77,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_top.addLayout(layout_file_load)
 
         ### ---------------------------------------------
-        ###Combo box to choose file type
+        ### Combo box to choose file type
         ### ---------------------------------------------
         combo_filetype = QtWidgets.QComboBox()
         combo_filetype.addItems(["ANZAI"])
@@ -93,15 +93,22 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.filetype =  combo_filetype.itemText(0)
         layout_file_load.addWidget(combo_filetype)
 
+        layout_top.setContentsMargins(0, 0, 0, 0)  
         self.layout.addLayout(layout_top)
         
+        
         ### ---------------------------------------------
-        ### CHART
+        ### CHART - raw
         ### ---------------------------------------------
+        layout_chart = QtWidgets.QHBoxLayout()
+        layout_chart.setContentsMargins(0, 0, 0, 0)  
         self.chart_raw = QChart()
         self.chart_raw.setTitle("TEST")
         self.chart_raw_view = QChartView(self.chart_raw)
-        self.layout.addWidget(self.chart_raw_view)
+        self.chart_raw_view.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        layout_chart.addWidget(self.chart_raw_view,stretch=2)
+
+        self.layout.addLayout(layout_chart)
 
         self.axis_x_raw = QValueAxis()
         self.axis_x_raw.setTitleText("Time")
@@ -120,6 +127,153 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
         legend = self.chart_raw.legend()
         legend.setVisible(False)
+
+        ### ---------------------------------------------
+        ### CHART - modeling
+        ### ---------------------------------------------
+        self.chart_modeling = QChart()
+        self.chart_modeling.setTitle("Modeling")
+        self.chart_modeling_view = QChartView(self.chart_modeling)
+        self.chart_modeling_view.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        layout_chart.addWidget(self.chart_modeling_view, stretch=1)
+        # self.layout.addLayout(layout_chart)
+
+        self.axis_x_modeling = QValueAxis()
+        self.axis_x_modeling.setTitleText("Time")
+        self.chart_modeling.addAxis(self.axis_x_modeling, Qt.AlignmentFlag.AlignBottom)
+
+        self.axis_y_modeling = QValueAxis()
+        self.axis_y_modeling.setTitleText("Value")
+        self.chart_modeling.addAxis(self.axis_y_modeling, Qt.AlignmentFlag.AlignLeft)
+        
+        series_empty = QLineSeries()
+        self.chart_modeling.addSeries(series_empty)
+        series_empty.attachAxis(self.axis_x_modeling)
+        series_empty.attachAxis(self.axis_y_modeling)
+
+        legend = self.chart_modeling.legend()
+        legend.setVisible(False)
+
+
+        ### ---------------------------------------------
+        ### LineEdit to set range for chart-raw
+        ### ---------------------------------------------
+        layout_settings = QtWidgets.QHBoxLayout()
+        layout_raw_setting = QtWidgets.QVBoxLayout()
+        layout_raw_setting_label = QtWidgets.QHBoxLayout()
+        layout_raw_setting_lineedit = QtWidgets.QHBoxLayout()
+
+        label_xmin = QtWidgets.QLabel("xmin")
+        label_xmax = QtWidgets.QLabel("xmax")
+        label_ymin = QtWidgets.QLabel("ymin")
+        label_ymax = QtWidgets.QLabel("ymax")
+
+        layout_raw_setting_label.addWidget(label_xmin)
+        layout_raw_setting_label.addWidget(label_xmax)
+        layout_raw_setting_label.addWidget(label_ymin)
+        layout_raw_setting_label.addWidget(label_ymax)
+
+        self.lineedit_xmin = QtWidgets.QLineEdit(self)
+        self.lineedit_xmax = QtWidgets.QLineEdit(self)
+        self.lineedit_ymin = QtWidgets.QLineEdit(self)
+        self.lineedit_ymax = QtWidgets.QLineEdit(self)
+        
+        layout_raw_setting_lineedit.addWidget(self.lineedit_xmin)
+        layout_raw_setting_lineedit.addWidget(self.lineedit_xmax)
+        layout_raw_setting_lineedit.addWidget(self.lineedit_ymin)
+        layout_raw_setting_lineedit.addWidget(self.lineedit_ymax)
+
+        layout_raw_setting.addLayout(layout_raw_setting_label)
+        layout_raw_setting.addLayout(layout_raw_setting_lineedit)
+
+        button_range_submit = QtWidgets.QPushButton("Submit", self)
+        button_range_submit.clicked.connect(self.range_submit)
+        layout_raw_setting_label.addWidget(button_range_submit)
+        button_range_submit.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        
+        button_range_reset = QtWidgets.QPushButton("Reset", self)
+        # button_range_reset.clicked.connect(self.range_submit)
+        layout_raw_setting_lineedit.addWidget(button_range_reset)
+        button_range_reset.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        
+        range_widget = QtWidgets.QWidget(self)        
+        layout_raw_setting.setSpacing(1)  
+        # layout_range_setting.addSpacing(200)
+        range_widget.setLayout(layout_raw_setting)
+        # range_widget.setFixedWidth(100)
+        range_widget.setStyleSheet("""
+            QWidget {
+                border: 2px solid #333333;
+                border-radius: 8px;
+                background-color: #f0f0f0;
+            }
+        """)
+        
+
+        # vertical_line = QtWidgets.QFrame()
+        # vertical_line.setFrameShape(QtWidgets.QFrame.Shape.VLine)  # 수직선 설정
+        # vertical_line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)  # 그림자 효과
+
+        layout_settings.addWidget(range_widget,stretch=2)
+        # layout_settings.addLayout(layout_raw_setting)
+        
+
+
+
+        ### ---------------------------------------------
+        ### LineEdit to set range for chart-modeling
+        ### ---------------------------------------------
+        layout_modeling_setting = QtWidgets.QHBoxLayout()
+
+        label_test = QtWidgets.QLabel("test")
+        layout_modeling_setting.addWidget(label_test)
+
+        test_widget = QtWidgets.QWidget(self)
+        test_widget.setStyleSheet("""
+            QWidget {
+                border: 2px solid #333333;
+                border-radius: 8px;
+                background-color: #f0f0f0;
+            }
+        """)
+        
+        test_widget.setLayout(layout_modeling_setting)
+        
+        
+        layout_settings.addWidget(test_widget,stretch=1)
+        
+
+        self.layout.addLayout(layout_settings)
 
         
         ### ---------------------------------------------
@@ -157,6 +311,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             else:
                 self.print_terminal_colored("Undefined file type", color='#ff0000')
                 return
+            self.chart_raw.setTitle("File : {}".format(file_path))
             self.Show_chart()
         else:
             return
@@ -184,3 +339,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         fmt.setForeground(QColor("black"))
         cursor.setCharFormat(fmt)
         self.terminal_output.setTextCursor(cursor)
+
+    def range_submit(self,):
+        self.axis_x_raw.setRange(0,1)
+        self.axis_y_raw.setRange(0,1)
