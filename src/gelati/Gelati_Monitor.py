@@ -177,6 +177,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         ### LineEdit to set range for chart-raw
         ### ---------------------------------------------
         layout_settings = QtWidgets.QHBoxLayout()
+        layout_settings.setContentsMargins(0,0,0,0,)
         layout_raw_setting = QtWidgets.QVBoxLayout()
         layout_raw_setting_label = QtWidgets.QHBoxLayout()
         layout_raw_setting_lineedit = QtWidgets.QHBoxLayout()

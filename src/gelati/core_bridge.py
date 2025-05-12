@@ -31,9 +31,12 @@ class Bridge:
 
         GM.Peak_extract2(self.index_range)
         GM.Slicing_data()
+        GM.Selection_A(sigma=2)
+        GM.Selection_C(sigma=2)
         GM.Period_generate()
         GM.Guide_sample()
 
+        
         self.list_model_amp = GM.list_guide
         self.model_period = GM.guide_period
         self.list_model_time = np.linspace(0, self.model_period, self.interpolation_step)
