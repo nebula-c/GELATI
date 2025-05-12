@@ -37,7 +37,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
         layout_top = QtWidgets.QHBoxLayout()
         layout_top.setContentsMargins(10, 0, 10, 0)
-        
+
         ### ---------------------------------------------
         ### Logo(temp)
         ### ---------------------------------------------
@@ -75,7 +75,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
 
-        button_file_load.clicked.connect(self.open_file_dialog)
+        button_file_load.clicked.connect(lambda: self.open_file_dialog)
         layout_file_load.addWidget(button_file_load)
         layout_file_load.setSpacing(0)
         layout_top.addLayout(layout_file_load)
@@ -204,7 +204,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_raw_setting.addLayout(layout_raw_setting_lineedit)
 
         button_range_submit = QtWidgets.QPushButton("Submit", self)
-        button_range_submit.clicked.connect(self.range_submit)
+        button_range_submit.clicked.connect(lambda: self.range_submit)
         layout_raw_setting_label.addWidget(button_range_submit)
         button_range_submit.setStyleSheet("""
             QPushButton {
@@ -224,7 +224,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         """)
         
         button_range_reset = QtWidgets.QPushButton("Reset", self)
-        # button_range_reset.clicked.connect(self.range_submit)
+        # button_range_reset.clicked.connect(lambda: self.range_submit)
         layout_raw_setting_lineedit.addWidget(button_range_reset)
         button_range_reset.setStyleSheet("""
             QPushButton {
@@ -273,6 +273,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_modeling_setting = QtWidgets.QHBoxLayout()
 
         button_modeling_export = QtWidgets.QPushButton("Export", self)
+        button_modeling_export.clicked.connect(lambda: self.show_message("Not developed yet"))
         button_modeling_export.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;
@@ -290,7 +291,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
 
-
+    
         layout_modeling_setting.addWidget(button_modeling_export)        
         modeling_widget = QtWidgets.QWidget(self)        
         modeling_widget.setLayout(layout_modeling_setting)
@@ -369,3 +370,11 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
     def range_submit(self,):
         self.axis_x_raw.setRange(0,1)
         self.axis_y_raw.setRange(0,1)
+
+    
+    def show_message(self, mytext):
+        msg = QtWidgets.QMessageBox()
+        msg.setText(mytext)
+        msg.setWindowTitle("Message")
+        msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        msg.exec()
