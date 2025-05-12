@@ -2,6 +2,8 @@ import pandas as pd
 
 
 def read_anzai(filepath):
+    keyword = "***DataNo."
+    mydatatime = 0
     with open(filepath, "r") as file:
         lines = file.readlines()
         for line in lines:

@@ -11,10 +11,13 @@ import logging
 import time
 
 from gelati import core
+from gelati import file_reader
 
 
 class Gelati_Monitor(QtWidgets.QMainWindow):
     filetype = None
+    list_time = None
+    list_amp = None
 
     def __init__(self,):
         super().__init__()
@@ -85,6 +88,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
         combo_filetype.currentTextChanged.connect(lambda text: setattr(self, 'filetype', text))
+        self.filetype =  combo_filetype.itemText(0)
 
 
 
@@ -136,7 +140,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             QPlainTextEdit {
                 background-color: #000000;
                 color: #ffffff;
-                border: none;
+                border: 5px solid #a0a0a0;
                 padding: 6px;
                 font-family: Consolas;
                 font-size: 14px;
@@ -156,9 +160,27 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
     def open_file_dialog(self,):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")
         if file_path:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-                print("File :\n", content)
+            if self.filetype == "ANZAI":
+                list_time, list_amp = file_reader.read_anzai(file_path)
+                if list_time is not None and list_amp is not None:
+                    self.terminal_output.appendPlainText("File {} is opened".format(file_path))
+                
+            else:
+                self.append_colored_text("Undefined file type", color='#ff0000')
+                # self.terminal_output.appendPlainText("Undefined file type")
+                
 
 
-
+    def append_colored_text(self, text, color="red"):
+        cursor = self.terminal_output.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        self.terminal_output.setTextCursor(cursor)
+        fmt = QTextCharFormat()
+        fmt.setForeground(QColor(color))
+        cursor.setCharFormat(fmt)
+        cursor.insertText("\n" + text)
+        self.terminal_output.setTextCursor(cursor)
+        self.terminal_output.ensureCursorVisible()
+        fmt.setForeground(QColor("black"))
+        cursor.setCharFormat(fmt)
+        self.terminal_output.setTextCursor(cursor)
