@@ -21,7 +21,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
     def __init__(self,):
         super().__init__()
+        self.Basic_Framing()
 
+
+    def Basic_Framing(self,):
         self.setWindowTitle("GELATI")
         self.setGeometry(100, 100, 800, 600)
 
@@ -89,21 +92,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         """)
         combo_filetype.currentTextChanged.connect(lambda text: setattr(self, 'filetype', text))
         self.filetype =  combo_filetype.itemText(0)
-
-
-
         layout_file_load.addWidget(combo_filetype)
-
-
 
         self.layout.addLayout(layout_top)
         
-
-        
-
-
-
-
         ### ---------------------------------------------
         ### CHART
         ### ---------------------------------------------
