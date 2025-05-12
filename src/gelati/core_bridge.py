@@ -49,6 +49,6 @@ class Bridge:
         self.interpolation_step = 100
         self.index_range = self.datarate * self.time_for_1breath
 
-
+        
 
 
