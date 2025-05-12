@@ -46,5 +46,34 @@ class Gelati_Monitor(QMainWindow):
         
 
 
+        ### ---------------------------------------------
+        ### CHART
+        ### ---------------------------------------------
+        self.chart_raw = QChart()
+        self.chart_raw.setTitle("TEST")
+        self.chart_raw_view = QChartView(self.chart_raw)
+        self.layout.addWidget(self.chart_raw_view)
+
+        self.axis_x_raw = QValueAxis()
+        self.axis_x_raw.setTitleText("Time")
+        # self.axis_x_raw.setRange(0, 10)
+        self.chart_raw.addAxis(self.axis_x_raw, Qt.AlignmentFlag.AlignBottom)
+
+        self.axis_y_raw = QValueAxis()
+        self.axis_y_raw.setTitleText("Value")
+        # self.axis_y_raw.setRange(0, 10)
+        self.chart_raw.addAxis(self.axis_y_raw, Qt.AlignmentFlag.AlignLeft)
+        
+        empty_series = QLineSeries()
+        self.chart_raw.addSeries(empty_series)
+        empty_series.attachAxis(self.axis_x_raw)
+        empty_series.attachAxis(self.axis_y_raw)
+
+        legend = self.chart_raw.legend()
+        legend.setVisible(False)
+
+        
+
+
 
 
