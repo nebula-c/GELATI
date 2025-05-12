@@ -1,6 +1,6 @@
 import numpy as np
-# from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QFileDialog, QLabel
+from PyQt6 import QtWidgets
+# from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QFileDialog, QLabel
 from PyQt6.QtGui import QColor, QPixmap, QTextCharFormat, QTextCursor
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis
@@ -13,27 +13,29 @@ import time
 from gelati import core
 
 
-class Gelati_Monitor(QMainWindow):
+class Gelati_Monitor(QtWidgets.QMainWindow):
+    filetype = None
+
     def __init__(self,):
         super().__init__()
 
         self.setWindowTitle("GELATI")
         self.setGeometry(100, 100, 800, 600)
 
-        self.central_widget = QWidget()
+        self.central_widget = QtWidgets.QWidget()
         self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout(self.central_widget)
+        self.layout = QtWidgets.QVBoxLayout(self.central_widget)
         self.central_widget.setStyleSheet("background-color: white;")
 
 
 
-        top_layout = QHBoxLayout()
+        top_layout = QtWidgets.QHBoxLayout()
 
         ### ---------------------------------------------
         ### Logo(temp)
         ### ---------------------------------------------
-        logo_layout = QHBoxLayout()
-        logo_label = QLabel()
+        logo_layout = QtWidgets.QHBoxLayout()
+        logo_label = QtWidgets.QLabel()
         logo_path = pkg_resources.resource_filename('gelati', 'images/gelati_logo2.png')
         logo_pixmap = QPixmap(logo_path)
         scaled_logo_pixmap = logo_pixmap.scaled(1000, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
@@ -46,8 +48,8 @@ class Gelati_Monitor(QMainWindow):
         ### ---------------------------------------------
         ### Button to load file
         ### ---------------------------------------------
-        file_load_button_layout = QHBoxLayout()
-        file_load_button = QPushButton("파일 열기")
+        file_load_button_layout = QtWidgets.QHBoxLayout()
+        file_load_button = QtWidgets.QPushButton("파일 열기")
         file_load_button.setStyleSheet("""
             QPushButton {
                 background-color: #4CAF50;
@@ -68,6 +70,27 @@ class Gelati_Monitor(QMainWindow):
         file_load_button.clicked.connect(self.open_file_dialog)
         file_load_button_layout.addWidget(file_load_button)
         top_layout.addLayout(file_load_button_layout)
+
+        ### ---------------------------------------------
+        ###Combo box to choose file type
+        ### ---------------------------------------------
+        combo = QtWidgets.QComboBox()
+        combo.addItems(["ANZAI"])
+        combo.setStyleSheet("""
+            QComboBox {
+                background-color: white;
+                color: black;
+                border: 1px solid gray;
+                padding: 5px;
+            }
+        """)
+        combo.currentTextChanged.connect(lambda text: setattr(self, 'filetype', text))
+
+
+
+        file_load_button_layout.addWidget(combo)
+
+
 
         self.layout.addLayout(top_layout)
         
