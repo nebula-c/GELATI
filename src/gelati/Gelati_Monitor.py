@@ -204,7 +204,8 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_raw_setting.addLayout(layout_raw_setting_lineedit)
 
         button_range_submit = QtWidgets.QPushButton("Submit", self)
-        button_range_submit.clicked.connect(lambda: self.range_submit)
+        # button_range_submit.clicked.connect(lambda: self.range_submit)
+        button_range_submit.clicked.connect(lambda: self.not_dev)
         layout_raw_setting_label.addWidget(button_range_submit)
         button_range_submit.setStyleSheet("""
             QPushButton {
@@ -225,6 +226,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         
         button_range_reset = QtWidgets.QPushButton("Reset", self)
         # button_range_reset.clicked.connect(lambda: self.range_submit)
+        button_range_reset.clicked.connect(lambda: self.not_dev)
         layout_raw_setting_lineedit.addWidget(button_range_reset)
         button_range_reset.setStyleSheet("""
             QPushButton {
@@ -273,7 +275,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_modeling_setting = QtWidgets.QHBoxLayout()
 
         button_modeling_export = QtWidgets.QPushButton("Export", self)
-        button_modeling_export.clicked.connect(lambda: self.show_message("Not developed yet"))
+        button_modeling_export.clicked.connect(lambda: self.not_dev())
         button_modeling_export.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;
@@ -378,3 +380,6 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         msg.setWindowTitle("Message")
         msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
         msg.exec()
+
+    self.not_dev(self,):
+        self.show_message("Not developed yet")
