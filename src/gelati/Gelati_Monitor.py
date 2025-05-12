@@ -164,14 +164,14 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 list_time, list_amp = file_reader.read_anzai(file_path)
                 if list_time is not None and list_amp is not None:
                     self.terminal_output.appendPlainText("File {} is opened".format(file_path))
-                
+                else:
+                    self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
             else:
-                self.append_colored_text("Undefined file type", color='#ff0000')
-                # self.terminal_output.appendPlainText("Undefined file type")
+                self.print_terminal_colored("Undefined file type", color='#ff0000')
                 
 
 
-    def append_colored_text(self, text, color="red"):
+    def print_terminal_colored(self, text, color="red"):
         cursor = self.terminal_output.textCursor()
         cursor.movePosition(QTextCursor.MoveOperation.End)
         self.terminal_output.setTextCursor(cursor)
