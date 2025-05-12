@@ -1,5 +1,6 @@
 import numpy as np
-from PyQt6.QtWidgets import *
+# from PyQt6 import QtWidgets
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton, QFileDialog, QLabel
 from PyQt6.QtGui import QColor, QPixmap, QTextCharFormat, QTextCursor
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis
@@ -25,8 +26,12 @@ class Gelati_Monitor(QMainWindow):
         self.central_widget.setStyleSheet("background-color: white;")
 
 
-        
 
+        top_layout = QHBoxLayout()
+
+        ### ---------------------------------------------
+        ### Logo(temp)
+        ### ---------------------------------------------
         logo_layout = QHBoxLayout()
         logo_label = QLabel()
         logo_path = pkg_resources.resource_filename('gelati', 'images/gelati_logo2.png')
@@ -34,16 +39,42 @@ class Gelati_Monitor(QMainWindow):
         scaled_logo_pixmap = logo_pixmap.scaled(1000, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         logo_label.setPixmap(scaled_logo_pixmap)
         logo_layout.addWidget(logo_label)
-        top_layout = QHBoxLayout()
-        top_layout.addLayout(logo_layout)
         
+        top_layout.addLayout(logo_layout)
+
+
+        ### ---------------------------------------------
+        ### Button to load file
+        ### ---------------------------------------------
+        file_load_button_layout = QHBoxLayout()
+        file_load_button = QPushButton("파일 열기")
+        file_load_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3e8e41;
+            }
+        """)
+
+        file_load_button.clicked.connect(self.open_file_dialog)
+        file_load_button_layout.addWidget(file_load_button)
+        top_layout.addLayout(file_load_button_layout)
+
         self.layout.addLayout(top_layout)
-
+        
 
         
-        top_layout = QHBoxLayout()
-        top_layout.addLayout(logo_layout)
-        
+
+
 
 
         ### ---------------------------------------------
@@ -74,6 +105,12 @@ class Gelati_Monitor(QMainWindow):
 
         
 
+    def open_file_dialog(self,):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")
+        if file_path:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                print("File :\n", content)
 
 
 
