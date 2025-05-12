@@ -127,6 +127,31 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         legend.setVisible(False)
 
         
+        ### ---------------------------------------------
+        ### Terminal
+        ### ---------------------------------------------
+        self.terminal_output = QtWidgets.QPlainTextEdit(self)
+        self.terminal_output.setReadOnly(True)
+        self.terminal_output.setStyleSheet("""
+            QPlainTextEdit {
+                background-color: #000000;
+                color: #ffffff;
+                border: none;
+                padding: 6px;
+                font-family: Consolas;
+                font-size: 14px;
+            }
+        """)
+
+        self.layout.addWidget(self.terminal_output)
+        self.layout.setContentsMargins(0, 0, 0, 20)
+        self.terminal_output.appendPlainText("You can find the full code here. https://github.com/nebula-c/GELATI (suchoi9709@gmail.com, Sungwoon Choi)")
+        self.terminal_output.appendPlainText("")
+        self.terminal_output.setFixedHeight(100)  # 텍스트 영역의 고정 높이 설정
+
+
+
+        
 
     def open_file_dialog(self,):
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")

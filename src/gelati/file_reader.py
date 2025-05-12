@@ -1,0 +1,23 @@
+import pandas as pd
+
+
+def read_anzai(filepath):
+    with open(filepath, "r") as file:
+        lines = file.readlines()
+        for line in lines:
+            if "Data Time(msec)" in line:
+                _, value_part = line.split(",", 1)
+                mydatatime = int(value_part.strip().split(",")[0])
+            if keyword in line:
+                myheaders = line.strip().split(",")
+
+
+        start_line = next(i for i, line in enumerate(lines) if "Data Start" in line) + 1
+        df = pd.read_csv(filepath, skiprows=start_line,header=None,names=myheaders)
+        
+        list_timestamp = df['"***DataNo.'].values * mydatatime
+        list_amp = df['Physics-Value***"'].apply(lambda x: x.strip("mm ")).values
+
+        return list_timestamp, list_amp
+
+
