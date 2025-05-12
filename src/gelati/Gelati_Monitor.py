@@ -22,35 +22,35 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.setWindowTitle("GELATI")
         self.setGeometry(100, 100, 800, 600)
 
-        self.central_widget = QtWidgets.QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QtWidgets.QVBoxLayout(self.central_widget)
-        self.central_widget.setStyleSheet("background-color: white;")
+        self.widget_central = QtWidgets.QWidget()
+        self.setCentralWidget(self.widget_central)
+        self.layout = QtWidgets.QVBoxLayout(self.widget_central)
+        self.widget_central.setStyleSheet("background-color: white;")
 
 
 
-        top_layout = QtWidgets.QHBoxLayout()
+        layout_top = QtWidgets.QHBoxLayout()
 
         ### ---------------------------------------------
         ### Logo(temp)
         ### ---------------------------------------------
-        logo_layout = QtWidgets.QHBoxLayout()
-        logo_label = QtWidgets.QLabel()
+        layout_logo = QtWidgets.QHBoxLayout()
+        label_logo = QtWidgets.QLabel()
         logo_path = pkg_resources.resource_filename('gelati', 'images/gelati_logo2.png')
-        logo_pixmap = QPixmap(logo_path)
-        scaled_logo_pixmap = logo_pixmap.scaled(1000, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-        logo_label.setPixmap(scaled_logo_pixmap)
-        logo_layout.addWidget(logo_label)
+        pixmap_logo = QPixmap(logo_path)
+        pixmap_scaled_logo = pixmap_logo.scaled(1000, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        label_logo.setPixmap(pixmap_scaled_logo)
+        layout_logo.addWidget(label_logo)
         
-        top_layout.addLayout(logo_layout)
+        layout_top.addLayout(layout_logo)
 
 
         ### ---------------------------------------------
         ### Button to load file
         ### ---------------------------------------------
-        file_load_button_layout = QtWidgets.QHBoxLayout()
-        file_load_button = QtWidgets.QPushButton("파일 열기")
-        file_load_button.setStyleSheet("""
+        layout_file_load = QtWidgets.QHBoxLayout()
+        button_file_load = QtWidgets.QPushButton("파일 열기")
+        button_file_load.setStyleSheet("""
             QPushButton {
                 background-color: #4CAF50;
                 color: white;
@@ -67,16 +67,16 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
 
-        file_load_button.clicked.connect(self.open_file_dialog)
-        file_load_button_layout.addWidget(file_load_button)
-        top_layout.addLayout(file_load_button_layout)
+        button_file_load.clicked.connect(self.open_file_dialog)
+        layout_file_load.addWidget(button_file_load)
+        layout_top.addLayout(layout_file_load)
 
         ### ---------------------------------------------
         ###Combo box to choose file type
         ### ---------------------------------------------
-        combo = QtWidgets.QComboBox()
-        combo.addItems(["ANZAI"])
-        combo.setStyleSheet("""
+        combo_filetype = QtWidgets.QComboBox()
+        combo_filetype.addItems(["ANZAI"])
+        combo_filetype.setStyleSheet("""
             QComboBox {
                 background-color: white;
                 color: black;
@@ -84,15 +84,15 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 padding: 5px;
             }
         """)
-        combo.currentTextChanged.connect(lambda text: setattr(self, 'filetype', text))
+        combo_filetype.currentTextChanged.connect(lambda text: setattr(self, 'filetype', text))
 
 
 
-        file_load_button_layout.addWidget(combo)
+        layout_file_load.addWidget(combo_filetype)
 
 
 
-        self.layout.addLayout(top_layout)
+        self.layout.addLayout(layout_top)
         
 
         
@@ -118,10 +118,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         # self.axis_y_raw.setRange(0, 10)
         self.chart_raw.addAxis(self.axis_y_raw, Qt.AlignmentFlag.AlignLeft)
         
-        empty_series = QLineSeries()
-        self.chart_raw.addSeries(empty_series)
-        empty_series.attachAxis(self.axis_x_raw)
-        empty_series.attachAxis(self.axis_y_raw)
+        series_empty = QLineSeries()
+        self.chart_raw.addSeries(series_empty)
+        series_empty.attachAxis(self.axis_x_raw)
+        series_empty.attachAxis(self.axis_y_raw)
 
         legend = self.chart_raw.legend()
         legend.setVisible(False)
@@ -129,7 +129,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         
 
     def open_file_dialog(self,):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")
+        file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select file", "", "All files (*)")
         if file_path:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
