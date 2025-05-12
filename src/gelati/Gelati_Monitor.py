@@ -9,7 +9,7 @@ import pkg_resources
 import logging
 import time
 
-from gelati import core
+from gelati import core_bridge
 from gelati import file_reader
 
 
@@ -17,10 +17,13 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
     filetype = None
     list_raw_time = None
     list_raw_amp = None
+    list_guide_time = None
+    list_guide_amp = None
 
     def __init__(self,):
         super().__init__()
         self.Basic_Framing()
+        self.Bridge = core_bridge.Bridge()
 
 
     def Basic_Framing(self,):
@@ -75,7 +78,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
 
-        button_file_load.clicked.connect(lambda: self.open_file_dialog)
+        button_file_load.clicked.connect(lambda: self.open_file_dialog())
         layout_file_load.addWidget(button_file_load)
         layout_file_load.setSpacing(0)
         layout_top.addLayout(layout_file_load)
@@ -272,7 +275,48 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         ### ---------------------------------------------
         ### LineEdit to set range for chart-modeling
         ### ---------------------------------------------
-        layout_modeling_setting = QtWidgets.QHBoxLayout()
+        layout_modeling_setting = QtWidgets.QVBoxLayout()
+
+        button_modeling_run = QtWidgets.QPushButton("Run", self)
+        # button_modeling_run.clicked.connect(lambda: self.not_dev())
+        button_modeling_run.clicked.connect(lambda: self.guide_modeling_run())
+        button_modeling_run.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        layout_modeling_setting.addWidget(button_modeling_run)        
+
+        button_modeling_specific = QtWidgets.QPushButton("Specific", self)
+        button_modeling_specific.clicked.connect(lambda: self.not_dev())
+        button_modeling_specific.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        layout_modeling_setting.addWidget(button_modeling_specific)        
 
         button_modeling_export = QtWidgets.QPushButton("Export", self)
         button_modeling_export.clicked.connect(lambda: self.not_dev())
@@ -292,9 +336,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 background-color: #666666;
             }
         """)
-
-    
         layout_modeling_setting.addWidget(button_modeling_export)        
+
+
+        layout_modeling_setting.setSpacing(1)
         modeling_widget = QtWidgets.QWidget(self)        
         modeling_widget.setLayout(layout_modeling_setting)
         
@@ -341,11 +386,11 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 self.print_terminal_colored("Undefined file type", color='#ff0000')
                 return
             self.chart_raw.setTitle("File : {}".format(file_path))
-            self.Show_chart()
+            self.Show_raw_chart()
         else:
             return
                 
-    def Show_chart(self,):
+    def Show_raw_chart(self,):
         series_file = QLineSeries()
         for x, y in zip(self.list_raw_time, self.list_raw_amp):
             series_file.append(QPointF(float(x), float(y)))
@@ -383,3 +428,20 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
     def not_dev(self,):
         self.show_message("Not developed yet")
+
+    def guide_modeling_run(self,):
+        if self.filetype=="ANZAI":
+            self.Bridge.set_raw_data(self.list_raw_time,self.list_raw_amp)
+            self.list_guide_time, self.list_guide_amp = self.Bridge.run_anzai()
+            self.Show_modeling_chart()
+        
+    def Show_modeling_chart(self,):
+        series_modeling = QLineSeries()
+        for x, y in zip(self.list_guide_time, self.list_guide_amp):
+            series_modeling.append(QPointF(float(x), float(y)))
+        self.chart_modeling.addSeries(series_modeling)
+        series_modeling.attachAxis(self.axis_x_modeling)
+        series_modeling.attachAxis(self.axis_y_modeling)
+        self.axis_x_modeling.setRange(min(self.list_guide_time),max(self.list_guide_time))
+        self.axis_y_modeling.setRange(min(self.list_guide_amp),max(self.list_guide_amp))
+        
