@@ -169,18 +169,31 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_chart.setContentsMargins(0, 0, 0, 0)
         self.chart_modeling_view = QChartView(self.chart_modeling)
         self.chart_modeling_view.setContentsMargins(0, 0, 0, 0)
+        
         self.chart_modeling_view.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         layout_chart.addWidget(self.chart_modeling_view, stretch=1)
-        self.layout.addLayout(layout_chart)
+        
+        charts_widget = QtWidgets.QWidget(self)        
+        charts_widget.setLayout(layout_chart)
+
+        self.layout.addWidget(charts_widget, stretch=4)
+        self.layout.addStretch()
+        # self.layout.addLayout(layout_chart)
+        # self.layout.setStretchFactor(layout_chart, 4)
 
         ### ---------------------------------------------
         ### LineEdit to set range for chart-raw
         ### ---------------------------------------------
         layout_settings = QtWidgets.QHBoxLayout()
-        layout_settings.setContentsMargins(0,0,0,0,)
+        layout_settings.setContentsMargins(0,0,0,0)
+        layout_settings.setSpacing(0)
         layout_raw_setting = QtWidgets.QVBoxLayout()
+        layout_raw_setting.setSpacing(1)
+        layout_raw_setting.setContentsMargins(0,0,0,0)
         layout_raw_setting_label = QtWidgets.QHBoxLayout()
+        layout_raw_setting_label.setContentsMargins(0,0,0,0)
         layout_raw_setting_lineedit = QtWidgets.QHBoxLayout()
+        layout_raw_setting_lineedit.setContentsMargins(0,0,0,0)
 
         setting_comp_height = 30
 
@@ -203,35 +216,17 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             layout_raw_setting_lineedit.addWidget(widget)
             widget.setFixedHeight(setting_comp_height)
 
-        
         layout_raw_setting.addLayout(layout_raw_setting_label)
         layout_raw_setting.addLayout(layout_raw_setting_lineedit)
+        layout_raw_setting.addStretch()
 
-        button_range_submit = QtWidgets.QPushButton("Submit", self)
-        # button_range_submit.clicked.connect(lambda: self.range_submit)
-        button_range_submit.clicked.connect(lambda: self.not_dev())
-        layout_raw_setting_label.addWidget(button_range_submit)
-        button_range_submit.setStyleSheet("""
-            QPushButton {
-                background-color: #aaaaaa;
-                color: white;
-                font-size: 14px;
-                padding: 8px 16px;
-                border: none;
-                border-radius: 6px;
-            }
-            QPushButton:hover {
-                background-color: #888888;
-            }
-            QPushButton:pressed {
-                background-color: #666666;
-            }
-        """)
+
+        
         
         button_range_reset = QtWidgets.QPushButton("Reset", self)
         # button_range_reset.clicked.connect(lambda: self.range_submit)
         button_range_reset.clicked.connect(lambda: self.not_dev())
-        layout_raw_setting_lineedit.addWidget(button_range_reset)
+        layout_raw_setting_label.addWidget(button_range_reset)
         button_range_reset.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;
@@ -249,13 +244,33 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
 
-        for widget in [button_range_submit, button_range_reset]:
+        button_range_submit = QtWidgets.QPushButton("Submit", self)
+        # button_range_submit.clicked.connect(lambda: self.range_submit)
+        button_range_submit.clicked.connect(lambda: self.not_dev())
+        layout_raw_setting_lineedit.addWidget(button_range_submit)
+        button_range_submit.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+
+        for widget in [button_range_reset, button_range_submit]:
             widget.setFixedSize(80, setting_comp_height)
         
-        range_widget = QtWidgets.QWidget(self)        
-        layout_raw_setting.setSpacing(1)  
-        range_widget.setLayout(layout_raw_setting)
-        range_widget.setStyleSheet("""
+        raw_widget = QtWidgets.QWidget(self)        
+        raw_widget.setLayout(layout_raw_setting)
+        raw_widget.setStyleSheet("""
             QLabel {
                 font-size: 14px;
                 border: 2px solid #333333;
@@ -268,7 +283,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             }
         """)
         
-        layout_settings.addWidget(range_widget,stretch=2)
+        layout_settings.addWidget(raw_widget,stretch=2)
         
 
 
@@ -340,15 +355,19 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_modeling_setting.addWidget(button_modeling_export)        
 
 
+        layout_modeling_setting.addStretch()
         layout_modeling_setting.setSpacing(1)
         modeling_widget = QtWidgets.QWidget(self)        
         modeling_widget.setLayout(layout_modeling_setting)
-        
-        
         layout_settings.addWidget(modeling_widget,stretch=1)
         
-
-        self.layout.addLayout(layout_settings)
+        
+        settings_widget = QtWidgets.QWidget(self)        
+        settings_widget.setLayout(layout_settings)
+    
+        self.layout.addWidget(settings_widget,stretch=1)
+        # self.layout.addLayout(layout_settings)
+        # self.layout.setStretchFactor(layout_settings, 1)
 
         
         ### ---------------------------------------------
