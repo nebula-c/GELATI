@@ -1,15 +1,21 @@
-from setuptools import setup
+from setuptools import find_packages,setup
+
+
 
 setup(
-    name='GELATI',
-    version='0.1',
-    packages=find_packages(where='src'),
-	install_requires=[
-        'PyQt6',
+    name="GELATI",
+    version="0.1",
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    package_data={
+        'gelati': ['images/*'],
+    },
+    install_requires=[
+        'PyQt6'
     ],
     entry_points={
         'console_scripts': [
-            'myapp = gelati.main:main',
+            'gelati = gelati.main:main',
         ],
     }
 )
