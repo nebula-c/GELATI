@@ -19,6 +19,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
     list_raw_amp = None
     list_guide_time = None
     list_guide_amp = None
+    min_raw_val = None
+    max_raw_val = None
+    sliced_min_time = None
+    sliced_max_time = None
 
     def __init__(self,):
         super().__init__()
@@ -381,15 +385,14 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 color: #ffffff;
                 border: 5px solid #a0a0a0;
                 padding: 6px;
-                font-family: Consolas;
                 font-size: 14px;
             }
         """)
 
         self.layout.addWidget(self.terminal_output)
         self.layout.setContentsMargins(10, 10, 10, 20)
-        self.terminal_output.appendPlainText("You can find the full code here. https://github.com/nebula-c/GELATI (suchoi9709@gmail.com, Sungwoon Choi)")
-        self.terminal_output.appendPlainText("")
+        self.print_terminal("You can find the full code here. https://github.com/nebula-c/GELATI (suchoi9709@gmail.com, Sungwoon Choi)")
+        self.print_terminal("")
         self.terminal_output.setFixedHeight(100)
 
     def open_file_dialog(self,):
@@ -398,7 +401,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             if self.filetype == "ANZAI":
                 self.list_raw_time, self.list_raw_amp = file_reader.read_anzai(file_path)
                 if self.list_raw_time is not None and self.list_raw_amp is not None:
-                    self.terminal_output.appendPlainText("File {} is opened".format(file_path))
+                    self.print_terminal("File {} is opened".format(file_path))
                 else:
                     self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
                     return
@@ -407,30 +410,48 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 return
             self.chart_raw.setTitle("File : {}".format(file_path))
             self.Show_raw_chart()
+            self.Bridge.set_raw_data(self.list_raw_time,self.list_raw_amp)
+        
         else:
             return
                 
     def Show_raw_chart(self,):
-        for series in self.chart_raw.series():
-            self.chart_raw.removeSeries(series)
+        
+        try:
+            series_file = QLineSeries()
+            for x, y in zip(self.list_raw_time, self.list_raw_amp):
+                series_file.append(QPointF(float(x), float(y)))
+            
+            for series in self.chart_raw.series():
+                self.chart_raw.removeSeries(series)
+            
+            self.chart_raw.addSeries(series_file)
+            series_file.attachAxis(self.axis_x_raw)
+            series_file.attachAxis(self.axis_y_raw)
+            xmin = min(self.list_raw_time)
+            xmax = max(self.list_raw_time)
+            ymin = min(self.list_raw_amp)
+            ymax = max(self.list_raw_amp)
+            self.min_raw_val = ymin
+            self.max_raw_val = ymax
+            self.sliced_min_time = xmin
+            self.sliced_max_time = xmax
 
-        series_file = QLineSeries()
-        for x, y in zip(self.list_raw_time, self.list_raw_amp):
-            series_file.append(QPointF(float(x), float(y)))
-        self.chart_raw.addSeries(series_file)
-        series_file.attachAxis(self.axis_x_raw)
-        series_file.attachAxis(self.axis_y_raw)
-        xmin = min(self.list_raw_time)
-        xmax = max(self.list_raw_time)
-        ymin = min(self.list_raw_amp)
-        ymax = max(self.list_raw_amp)
-        self.axis_x_raw.setRange(xmin,xmax)
-        self.axis_y_raw.setRange(ymin,ymax)
-        self.lineedit_xmin.setText(str(xmin))
-        self.lineedit_xmax.setText(str(xmax))
-        self.lineedit_ymin.setText(str(ymin))
-        self.lineedit_ymax.setText(str(ymax))
+            self.axis_x_raw.setRange(xmin,xmax)
+            self.axis_y_raw.setRange(ymin,ymax)
+            self.lineedit_xmin.setText(str(xmin))
+            self.lineedit_xmax.setText(str(xmax))
+            self.lineedit_ymin.setText(str(ymin))
+            self.lineedit_ymax.setText(str(ymax))
 
+            self.print_terminal("Successed to load data from the file")
+
+        except:
+            self.print_terminal("Failed to show data from the file")
+
+    def print_terminal(self, text):
+        self.terminal_output.appendPlainText("{}".format(text))
+    
     def print_terminal_colored(self, text, color="red"):
         cursor = self.terminal_output.textCursor()
         cursor.movePosition(QTextCursor.MoveOperation.End)
@@ -446,20 +467,43 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.terminal_output.setTextCursor(cursor)
 
     def raw_chart_range_submit(self,):
-        xmin = float(self.lineedit_xmin.text())
-        xmax = float(self.lineedit_xmax.text())
-        ymin = float(self.lineedit_ymin.text())
-        ymax = float(self.lineedit_ymax.text())
-        
+        try:
+            xmin = float(self.lineedit_xmin.text())
+            xmax = float(self.lineedit_xmax.text())
+            ymin = float(self.lineedit_ymin.text())
+            ymax = float(self.lineedit_ymax.text())
+        except:
+            self.print_terminal_colored("Cannot read values!")
+            return
+
+        self.min_raw_val = ymin
+        self.max_raw_val = ymax
+        self.sliced_min_time = xmin
+        self.sliced_max_time = xmax
+
+
         self.axis_x_raw.setRange(xmin,xmax)
         self.axis_y_raw.setRange(ymin,ymax)
 
+        self.Bridge.range_slicing(xmin,xmax)
+        self.axis_y_modeling.setRange(self.min_raw_val,self.max_raw_val)
+        self.print_terminal("Range is changed: {}-{} / {}-{}".format(xmin,xmax,ymin,ymax))
+
     def raw_chart_range_reset(self,):
-        xmin = min(self.list_raw_time)
-        xmax = max(self.list_raw_time)
-        ymin = min(self.list_raw_amp)
-        ymax = max(self.list_raw_amp)
+        try:
+            xmin = min(self.list_raw_time)
+            xmax = max(self.list_raw_time)
+            ymin = min(self.list_raw_amp)
+            ymax = max(self.list_raw_amp)
+        except:
+            self.print_terminal_colored("No data")
+            return
         
+        self.min_raw_val = ymin
+        self.max_raw_val = ymax
+        self.sliced_min_time = xmin
+        self.sliced_max_time = xmax
+
         self.axis_x_raw.setRange(xmin,xmax)
         self.axis_y_raw.setRange(ymin,ymax)
 
@@ -467,6 +511,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.lineedit_xmax.setText(str(xmax))
         self.lineedit_ymin.setText(str(ymin))
         self.lineedit_ymax.setText(str(ymax))
+
+        self.Bridge.reset_slicing()
+        self.axis_y_modeling.setRange(self.min_raw_val,self.max_raw_val)
+        self.print_terminal("Range is reseted")
 
     def show_message(self, mytext):
         msg = QtWidgets.QMessageBox()
@@ -480,17 +528,30 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
     def guide_modeling_run(self,):
         if self.filetype=="ANZAI":
-            self.Bridge.set_raw_data(self.list_raw_time,self.list_raw_amp)
             self.list_guide_time, self.list_guide_amp = self.Bridge.run_anzai()
-            self.Show_modeling_chart()
+
+            if self.list_guide_time is None or self.list_guide_amp is None:
+                self.print_terminal_colored("Modeling is not working!!!")
+                return
+            else:
+                self.Show_modeling_chart()
         
     def Show_modeling_chart(self,):
         series_modeling = QLineSeries()
-        for x, y in zip(self.list_guide_time, self.list_guide_amp):
-            series_modeling.append(QPointF(float(x), float(y)))
-        self.chart_modeling.addSeries(series_modeling)
-        series_modeling.attachAxis(self.axis_x_modeling)
-        series_modeling.attachAxis(self.axis_y_modeling)
-        self.axis_x_modeling.setRange(min(self.list_guide_time),max(self.list_guide_time))
-        self.axis_y_modeling.setRange(min(self.list_guide_amp),max(self.list_guide_amp))
-        
+        try:
+            for x, y in zip(self.list_guide_time, self.list_guide_amp):
+                series_modeling.append(QPointF(float(x), float(y)))
+            for series in self.chart_modeling.series():
+                self.chart_modeling.removeSeries(series)
+            
+            self.chart_modeling.addSeries(series_modeling)
+            series_modeling.attachAxis(self.axis_x_modeling)
+            series_modeling.attachAxis(self.axis_y_modeling)
+            self.axis_x_modeling.setRange(min(self.list_guide_time),max(self.list_guide_time))
+            self.axis_y_modeling.setRange(self.min_raw_val,self.max_raw_val)
+
+            self.chart_modeling.setTitle("Modeling(range: {}-{})".format(self.sliced_min_time, self.sliced_max_time)) 
+            self.print_terminal("Successed to generate guide-signal")
+
+        except:
+            self.print_terminal("Failed to show guide-signal")
