@@ -292,6 +292,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         ### LineEdit to set range for chart-modeling
         ### ---------------------------------------------
         layout_modeling_setting = QtWidgets.QVBoxLayout()
+        layout_modeling_setting.setContentsMargins(10,0,0,10)
 
         button_modeling_run = QtWidgets.QPushButton("Run", self)
         # button_modeling_run.clicked.connect(lambda: self.not_dev())
@@ -303,7 +304,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
                 font-size: 14px;
                 padding: 8px 16px;
                 border: none;
-                border-radius: 6px;
+                border-radius: 6px;xw
             }
             QPushButton:hover {
                 background-color: #888888;
