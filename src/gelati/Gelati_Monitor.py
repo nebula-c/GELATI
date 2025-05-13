@@ -229,7 +229,6 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         
         button_range_reset = QtWidgets.QPushButton("Reset", self)
         button_range_reset.clicked.connect(lambda: self.raw_chart_range_reset())
-        # button_range_reset.clicked.connect(lambda: self.not_dev())
         layout_raw_setting_label.addWidget(button_range_reset)
         button_range_reset.setStyleSheet("""
             QPushButton {
@@ -298,7 +297,6 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_modeling_setting.setContentsMargins(10,0,0,10)
 
         button_modeling_run = QtWidgets.QPushButton("Run", self)
-        # button_modeling_run.clicked.connect(lambda: self.not_dev())
         button_modeling_run.clicked.connect(lambda: self.guide_modeling_run())
         button_modeling_run.setStyleSheet("""
             QPushButton {
@@ -339,7 +337,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_modeling_setting.addWidget(button_modeling_specific)        
 
         button_modeling_export = QtWidgets.QPushButton("Export", self)
-        button_modeling_export.clicked.connect(lambda: self.not_dev())
+        button_modeling_export.clicked.connect(lambda: self.file_export())
         button_modeling_export.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;
@@ -555,3 +553,19 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
         except:
             self.print_terminal("Failed to show guide-signal")
+
+    def file_export(self,):
+        file_path, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.txt);;All Files (*)")
+
+        try:
+            if file_path:
+                with open(file_path, 'w') as f:
+                    for iter in range(len(self.list_guide_time)):
+                        temp_time = self.list_guide_time[iter]
+                        temp_amp = self.list_guide_amp[iter]
+
+                        f.write("{}, {}\n".format(temp_time, temp_amp))
+            self.print_terminal("File({}) is saved".format(file_path))
+
+        except:
+            self.print_terminal_colored("Failed to export as file")
