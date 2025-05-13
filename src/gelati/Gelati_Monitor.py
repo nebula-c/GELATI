@@ -224,8 +224,8 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         
         
         button_range_reset = QtWidgets.QPushButton("Reset", self)
-        # button_range_reset.clicked.connect(lambda: self.range_submit)
-        button_range_reset.clicked.connect(lambda: self.not_dev())
+        button_range_reset.clicked.connect(lambda: self.raw_chart_range_reset())
+        # button_range_reset.clicked.connect(lambda: self.not_dev())
         layout_raw_setting_label.addWidget(button_range_reset)
         button_range_reset.setStyleSheet("""
             QPushButton {
@@ -245,8 +245,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         """)
 
         button_range_submit = QtWidgets.QPushButton("Submit", self)
-        # button_range_submit.clicked.connect(lambda: self.range_submit)
-        button_range_submit.clicked.connect(lambda: self.not_dev())
+        button_range_submit.clicked.connect(lambda: self.raw_chart_range_submit())
         layout_raw_setting_lineedit.addWidget(button_range_submit)
         button_range_submit.setStyleSheet("""
             QPushButton {
@@ -412,14 +411,25 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
             return
                 
     def Show_raw_chart(self,):
+        for series in self.chart_raw.series():
+            self.chart_raw.removeSeries(series)
+
         series_file = QLineSeries()
         for x, y in zip(self.list_raw_time, self.list_raw_amp):
             series_file.append(QPointF(float(x), float(y)))
         self.chart_raw.addSeries(series_file)
         series_file.attachAxis(self.axis_x_raw)
         series_file.attachAxis(self.axis_y_raw)
-        self.axis_x_raw.setRange(min(self.list_raw_time),max(self.list_raw_time))
-        self.axis_y_raw.setRange(min(self.list_raw_amp),max(self.list_raw_amp))
+        xmin = min(self.list_raw_time)
+        xmax = max(self.list_raw_time)
+        ymin = min(self.list_raw_amp)
+        ymax = max(self.list_raw_amp)
+        self.axis_x_raw.setRange(xmin,xmax)
+        self.axis_y_raw.setRange(ymin,ymax)
+        self.lineedit_xmin.setText(str(xmin))
+        self.lineedit_xmax.setText(str(xmax))
+        self.lineedit_ymin.setText(str(ymin))
+        self.lineedit_ymax.setText(str(ymax))
 
     def print_terminal_colored(self, text, color="red"):
         cursor = self.terminal_output.textCursor()
@@ -435,11 +445,29 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         cursor.setCharFormat(fmt)
         self.terminal_output.setTextCursor(cursor)
 
-    def range_submit(self,):
-        self.axis_x_raw.setRange(0,1)
-        self.axis_y_raw.setRange(0,1)
+    def raw_chart_range_submit(self,):
+        xmin = float(self.lineedit_xmin.text())
+        xmax = float(self.lineedit_xmax.text())
+        ymin = float(self.lineedit_ymin.text())
+        ymax = float(self.lineedit_ymax.text())
+        
+        self.axis_x_raw.setRange(xmin,xmax)
+        self.axis_y_raw.setRange(ymin,ymax)
 
-    
+    def raw_chart_range_reset(self,):
+        xmin = min(self.list_raw_time)
+        xmax = max(self.list_raw_time)
+        ymin = min(self.list_raw_amp)
+        ymax = max(self.list_raw_amp)
+        
+        self.axis_x_raw.setRange(xmin,xmax)
+        self.axis_y_raw.setRange(ymin,ymax)
+
+        self.lineedit_xmin.setText(str(xmin))
+        self.lineedit_xmax.setText(str(xmax))
+        self.lineedit_ymin.setText(str(ymin))
+        self.lineedit_ymax.setText(str(ymax))
+
     def show_message(self, mytext):
         msg = QtWidgets.QMessageBox()
         msg.setText(mytext)
