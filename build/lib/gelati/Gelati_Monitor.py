@@ -52,8 +52,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_logo.setSpacing(0)
         label_logo = QtWidgets.QLabel()
         # logo_path = pkg_resources.resource_filename('gelati', 'images/gelati_logo2.png')
-        # logo_path = self.resource_path('gelati', 'images/gelati_logo2.png')
-        logo_path = self.resource_path('images/gelati_logo2.png')
+        logo_path = self.resource_path('gelati', 'images/gelati_logo2.png')
         pixmap_logo = QPixmap(logo_path)
         pixmap_scaled_logo = pixmap_logo.scaled(1000, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         label_logo.setPixmap(pixmap_scaled_logo)
@@ -574,9 +573,8 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
 
 
 
-    def resource_path(self, relative_path):
+    def resource_path(relative_path):
         if hasattr(sys, '_MEIPASS'):
             return os.path.join(sys._MEIPASS, relative_path)
-        # return os.path.join(os.path.abspath("."), relative_path)
-        return pkg_resources.resource_filename('gelati', 'images/gelati_logo2.png')
+        return os.path.join(os.path.abspath("."), relative_path)
 
