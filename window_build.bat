@@ -3,5 +3,5 @@ pyinstaller --noconfirm --windowed --onefile --name gelati --hidden-import=PyQt6
 
 rmdir /s /q build
 del /f gelati.spec
-move dist\gelati\gelati.exe .\
+move dist\gelati.exe .\
 rmdir /s /q dist
