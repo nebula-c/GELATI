@@ -3,5 +3,5 @@ pyinstaller --noconfirm --windowed --name gelati --hidden-import=PyQt6.QtCharts 
 
 rmdir /s /q build
 del /f gelati.spec
-move dist\gelati\gelati.app .\
+move dist\gelati\gelati .\
 rmdir /s /q dist
