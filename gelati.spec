@@ -5,7 +5,7 @@ a = Analysis(
     ['src\\gelati\\main.py'],
     pathex=[],
     binaries=[],
-    datas=["src/images/"],
+    datas=["src/images/gelati_logo2", "images"],
     hiddenimports=['PyQt6.QtCharts'],
     hookspath=[],
     hooksconfig={},
