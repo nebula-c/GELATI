@@ -14,13 +14,30 @@ class Bridge:
         self.datarate           = None
         self.interpolation_step = None
         self.index_range        = None
+        self.filetype = None
 
         self.GM = core.guide_modeling()
 
-    def set_raw_data(self,list_raw_time,list_raw_amp):
-        self.list_raw_time = list_raw_time
-        self.list_raw_amp = list_raw_amp
+    def set_raw_data(self,):
+        self.list_raw_time, self.list_raw_amp = self.get_raw_data_from_file()
 
+    def set_callback(self, name, func):
+        setattr(self, name, func)
+
+    def guide_modeling_run(self,):
+        self.filetype = self.get_filetype()
+        if self.filetype=="ANZAI":
+            self.list_model_time, self.list_model_amp = self.run_anzai()
+
+            if self.list_model_time is None or self.list_model_amp is None:
+                self.print_terminal_colored("Modeling is not working!!!")
+                return
+            else:
+                self.get_guide_data()
+                self.Show_modeling_chart()
+        else:
+            self.print_terminal_colored("Please choose a correct file")
+    
     def run_anzai(self,):
         self.setting_for_anzai()
         GM = self.GM
@@ -85,3 +102,12 @@ class Bridge:
     def reset_slicing(self,):
         self.list_sliced_time = None
         self.list_sliced_amp  = None
+
+    def get_guide_data(self,):
+        return self.list_model_time, self.list_model_amp
+
+    def get_raw_yrange(self):
+        return min(self.list_raw_amp),max(self.list_raw_amp)
+    
+    def get_raw_xyrange(self):
+        return min(self.list_raw_time),max(self.list_raw_time),min(self.list_raw_amp),max(self.list_raw_amp)
