@@ -25,7 +25,7 @@ class rawchart_handler:
 
     def chart_raw_view(self,):
         self.chart_raw.setMargins(QMargins(0, 0, 0, 0))
-        self.chart_raw.setTitle("TEST")
+        self.chart_raw.setTitle("BLANK")
         self.axis_x_raw = QValueAxis()
         self.axis_x_raw.setTitleText("Time")
         self.chart_raw.addAxis(self.axis_x_raw, Qt.AlignmentFlag.AlignBottom)

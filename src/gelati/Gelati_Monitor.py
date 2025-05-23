@@ -1,14 +1,5 @@
-import numpy as np
-from PyQt6.QtWidgets import QApplication
 from PyQt6 import QtWidgets
-from PyQt6.QtGui import QColor, QTextCharFormat, QTextCursor, QIcon
-from PyQt6.QtCore import QTimer, Qt, QPointF, QMargins
-from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis
-from datetime import datetime
-import os,sys
-import pkg_resources
-import logging
-import time
+from PyQt6.QtCore import Qt
 
 from gelati import core_bridge
 from gelati import file_reader

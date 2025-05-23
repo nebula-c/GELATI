@@ -4,16 +4,11 @@
 ### free_guide_python_v5
 ### - - - - - - - - - - - - - - -
 import numpy as np
-import matplotlib.pyplot as plt
-import time
 from datetime import datetime
-import argparse
 import math
 from scipy.signal import find_peaks
 import ast
 
-
-total_start_time = time.time()    ### Just to check run time
 
 
 # temp_list_interpol_time = []
@@ -387,7 +382,6 @@ class guide_modeling:
         
         for i in range(len(list_target)):
             myval = list_target[i]
-            # my_cm = math.cbrt((Br * Vol) / (2 * math.pi * (myval - offset)))
             my_cm = np.cbrt((Br * Vol) / (2 * math.pi * (myval - offset)))
             list_cm.append(my_cm)
 

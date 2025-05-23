@@ -1,5 +1,4 @@
 from PyQt6 import QtWidgets
-from gelati import rawchart_handler
 from gelati import file_reader
 
 class fileloader_handler:
