@@ -29,20 +29,27 @@ class Bridge:
         if self.list_raw_time is None:
             self.print_terminal_colored("Please load raw data first.")
             return
-        if self.filetype=="ANZAI":
-            self.list_model_time, self.list_model_amp = self.run_anzai()
-
+        
+        if self.filetype=="Abches":
+            self.setting_for_abches()
+        elif self.filetype=="Anzai":
+            self.setting_for_anzai()
+        else:
+            self.print_terminal_colored("Please check the type of file.")
+        
+        try:
+            self.list_model_time, self.list_model_amp = self.run_modeling()
             if self.list_model_time is None or self.list_model_amp is None:
                 self.print_terminal_colored("Please load raw data first.")
                 return
             else:
                 self.get_guide_data()
                 self.Show_modeling_chart()
-        else:
-            self.print_terminal_colored("Please choose a correct file")
+        except:
+            self.print_terminal_colored("Modeling is not working")    
+            
     
-    def run_anzai(self,):
-        self.setting_for_anzai()
+    def run_modeling(self,):
         GM = self.GM
 
         if self.list_sliced_time is not None and self.list_sliced_amp is not None:
@@ -77,10 +84,15 @@ class Bridge:
         except:
             return None, None
 
-
     def setting_for_anzai(self,):
         self.time_for_1breath = 2
         self.datarate = 100
+        self.interpolation_step = 100
+        self.index_range = self.datarate * self.time_for_1breath
+
+    def setting_for_abches(self,):
+        self.time_for_1breath = 2
+        self.datarate = 35
         self.interpolation_step = 100
         self.index_range = self.datarate * self.time_for_1breath
 

@@ -40,7 +40,7 @@ class fileloader_handler:
 
     def combomox_filetype(self,):
         combomox_filetype = QtWidgets.QComboBox()
-        combomox_filetype.addItems(["ANZAI"])
+        combomox_filetype.addItems(["Abches","Anzai"])
         combomox_filetype.setStyleSheet("""
             QComboBox {
                 background-color: white;
@@ -49,7 +49,7 @@ class fileloader_handler:
                 padding: 5px;
             }
         """)
-        combomox_filetype.currentTextChanged.connect(lambda text: setattr('filetype', text))
+        combomox_filetype.currentTextChanged.connect(lambda text: setattr(self,'filetype', text))
         self.filetype =  combomox_filetype.itemText(0)
         # layout_file_load.addWidget(combomox_filetype)
         return combomox_filetype
@@ -58,7 +58,14 @@ class fileloader_handler:
         file_path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Select file", "", "All files (*)")
 
         if file_path:
-            if self.filetype == "ANZAI":
+            if self.filetype == "Abches":
+                self.list_raw_time, self.list_raw_amp = file_reader.read_abches(file_path)
+                if self.list_raw_time is not None and self.list_raw_amp is not None:
+                    self.print_terminal("File {} is opened".format(file_path))
+                else:
+                    self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
+                    return
+            elif self.filetype == "Anzai":
                 self.list_raw_time, self.list_raw_amp = file_reader.read_anzai(file_path)
                 if self.list_raw_time is not None and self.list_raw_amp is not None:
                     self.print_terminal("File {} is opened".format(file_path))
@@ -70,13 +77,12 @@ class fileloader_handler:
                 return
             
             self.filename = file_path
-            # self.set_raw_chart_title("File : {}".format(file_path))
             self.set_raw_chart_title()
             self.set_rawchart_raw_data()
             self.Show_raw_chart()
 
             self.set_bridge_raw_data()
-            # Bridge.set_raw_data(list_raw_time,list_raw_amp)
+
         
         else:
             return

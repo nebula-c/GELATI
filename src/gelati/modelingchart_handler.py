@@ -68,11 +68,11 @@ class modelingchart_handler:
             self.series_modeling.attachAxis(self.axis_x_modeling)
             self.series_modeling.attachAxis(self.axis_y_modeling)
             self.axis_x_modeling.setRange(min(self.list_guide_time),max(self.list_guide_time))
-            _,_,raw_chart_val_min,raw_chart_val_max = self.get_raw_chart_range()
+            raw_chart_time_min,raw_chart_time_max,raw_chart_val_min,raw_chart_val_max = self.get_raw_chart_range()
             self.axis_y_modeling.setRange(raw_chart_val_min,raw_chart_val_max)
             self.list_guide_amp_shown = self.list_guide_amp
 
-            self.chart_modeling.setTitle("Modeling(range: {}-{})".format(self.list_guide_time, self.list_guide_amp)) 
+            self.chart_modeling.setTitle("Modeling(range: {}-{})".format(raw_chart_time_min, raw_chart_time_max)) 
             self.print_terminal("Successed to generate guide-signal")
 
         except:

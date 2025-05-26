@@ -1,6 +1,16 @@
 import pandas as pd
 
 
+def read_abches(filepath):
+    try:
+        df = pd.read_csv(filepath)
+        list_amp = df['TerminalExpirationLine'].values
+        list_timestamp = df['MonitoringID'].values
+        return list_timestamp, list_amp
+        
+    except:
+        return None, None
+
 def read_anzai(filepath):
     keyword = "***DataNo."
     mydatatime = 0
