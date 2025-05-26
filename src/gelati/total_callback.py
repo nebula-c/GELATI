@@ -10,6 +10,7 @@ def total_callback(ctx):
     set_rawchart_raw_data       = ctx.rawchart_handler.set_raw_data
     get_raw_chart_range         = ctx.rawchart_handler.get_raw_chart_range
     set_axis_range              = ctx.rawchart_handler.set_axis_range
+    show_peaks                  = ctx.rawchart_handler.show_peaks
     set_modeling_yaix_range_new = ctx.modelingchart_handler.set_modeling_yaix_range_new
     set_modeling_yaix_range_raw = ctx.modelingchart_handler.set_modeling_yaix_range_raw
     Show_modeling_chart         = ctx.modelingchart_handler.Show_modeling_chart
@@ -26,6 +27,7 @@ def total_callback(ctx):
     get_raw_xyrange             = ctx.Bridge.get_raw_xyrange
     reset_slicing               = ctx.Bridge.reset_slicing
     seeking_peak                = ctx.Bridge.seeking_peak
+    get_raw_peaks               = ctx.Bridge.get_raw_peaks
     
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
@@ -40,6 +42,7 @@ def total_callback(ctx):
     ctx.rawchart_handler.set_callback("get_raw_data_from_file",get_raw_data_from_file)
     ctx.rawchart_handler.set_callback("set_lineedit_raw_range",set_lineedit_raw_range)
     ctx.rawchart_handler.set_callback("get_sliced_range",get_sliced_range)
+    ctx.rawchart_handler.set_callback("get_raw_peaks",get_raw_peaks)
     ctx.modelingchart_handler.set_callback("print_terminal",print_terminal)
     ctx.modelingchart_handler.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.modelingchart_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
@@ -65,4 +68,6 @@ def total_callback(ctx):
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)
     ctx.Bridge.set_callback("get_filetype",get_filetype)
     ctx.Bridge.set_callback("Show_modeling_chart",Show_modeling_chart)
+    ctx.Bridge.set_callback("show_peaks",show_peaks)
+    
     

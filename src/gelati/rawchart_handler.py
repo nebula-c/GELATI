@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets
-from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis
+from PyQt6.QtCharts import QChart, QChartView, QLineSeries, QValueAxis, QScatterSeries
 from PyQt6.QtCore import Qt, QMargins, QPointF
 
 
@@ -9,13 +9,17 @@ class rawchart_handler:
     axis_y_raw = None
     list_raw_time = None
     list_raw_amp = None
+    list_raw_time_peak = None
+    list_raw_amp_peak  = None
     sliced_min_time = None
     sliced_max_time = None
     min_raw_val = None
     max_raw_val = None
+    
 
     def __init__(self):
         self.chart_raw = QChart()
+        self.chart_peaks = QChart()
 
     def set_callback(self, name, func):
         setattr(self, name, func)
@@ -100,3 +104,14 @@ class rawchart_handler:
         self.axis_y_raw.setRange(ymin,ymax)
 
 
+    def show_peaks(self,):
+        self.list_raw_time_peak, self.list_raw_amp_peak = self.get_raw_peaks()
+        series_peaks = QScatterSeries()
+        for x, y in zip(self.list_raw_time_peak, self.list_raw_amp_peak):
+            series_peaks.append(QPointF(float(x), float(y)))
+        self.chart_raw.addSeries(series_peaks)
+        series_peaks.setMarkerSize(10)
+        series_peaks.attachAxis(self.axis_x_raw)
+        series_peaks.attachAxis(self.axis_y_raw)
+
+        

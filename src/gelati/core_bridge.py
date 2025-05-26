@@ -3,12 +3,12 @@ import numpy as np
 
 class Bridge:
     def __init__(self,):
-        self.list_raw_time      = []
-        self.list_raw_amp       = []
-        self.list_raw_time_peak = []
-        self.list_raw_amp_peak  = []
-        self.list_model_time    = []
-        self.list_model_amp     = []
+        self.list_raw_time      = None
+        self.list_raw_amp       = None
+        self.list_raw_time_peak = None
+        self.list_raw_amp_peak  = None
+        self.list_model_time    = None
+        self.list_model_amp     = None
         self.list_sliced_time   = None
         self.list_sliced_amp    = None
         self.model_period       = None
@@ -27,21 +27,9 @@ class Bridge:
         setattr(self, name, func)
 
     def guide_modeling_run(self,):
-        self.filetype = self.get_filetype()
         if self.list_raw_time is None:
             self.print_terminal_colored("Please load raw data first.")
             return
-        
-        if self.filetype=="Abches":
-            self.setting_for_abches()
-        elif self.filetype=="Anzai":
-            self.setting_for_anzai()
-        elif self.filetype=="RGSC":
-            self.setting_for_rgsc()
-        elif self.filetype=="SimRT":
-            self.setting_for_simrt()
-        else:
-            self.print_terminal_colored("Please check the type of file.")
         
         try:
             self.list_model_time, self.list_model_amp = self.run_modeling()
@@ -55,8 +43,19 @@ class Bridge:
             self.print_terminal_colored("Modeling is not working")    
             
     def seeking_peak(self,):
+        self.filetype = self.get_filetype()
+        if self.filetype=="Abches":
+            self.setting_for_abches()
+        elif self.filetype=="Anzai":
+            self.setting_for_anzai()
+        elif self.filetype=="RGSC":
+            self.setting_for_rgsc()
+        elif self.filetype=="SimRT":
+            self.setting_for_simrt()
+        else:
+            self.print_terminal_colored("Please check the type of file.")
+
         GM = self.GM
-        
 
         if self.list_sliced_time is not None and self.list_sliced_amp is not None:
             list_target_time = self.list_sliced_time
@@ -67,42 +66,28 @@ class Bridge:
         else:
             return None, None
 
-
-        
         GM.Set_interpolation_step(self.interpolation_step)
         GM.list_time = [float(x) for x in list_target_time]
         GM.list_val = [float(x) for x in list_target_amp]
         self.list_model_time = GM.list_time
         self.list_model_amp = GM.list_val
 
-        GM.Peak_extract2(self.index_range)
-        self.list_raw_time_peak = GM.list_time_peak
-        self.list_raw_amp_peak = GM.list_cm_peak
-
-
-        # return self.list_raw_time_peak, self.list_raw_amp_peak
+        try:
+            GM.Peak_extract2(self.index_range)
+            self.list_raw_time_peak = GM.list_time_peak
+            self.list_raw_amp_peak = GM.list_val_peak
+            self.show_peaks()
+        except:
+            self.print_terminal_colored("Failed to seek peaks")
 
     
     def run_modeling(self,):
+        
         GM = self.GM
-
-        if self.list_sliced_time is not None and self.list_sliced_amp is not None:
-            list_target_time = self.list_sliced_time
-            list_target_amp = self.list_sliced_amp
-        elif self.list_sliced_time is None and self.list_sliced_amp is None:
-            list_target_time = self.list_raw_time
-            list_target_amp = self.list_raw_amp
-        else:
-            return None, None
+        if self.list_raw_amp_peak is None or self.list_raw_time_peak is None:
+            self.print_terminal_colored("Please seak peaks by pressing the peaks button")
 
         try:
-            GM.Set_interpolation_step(self.interpolation_step)
-            GM.list_time = [float(x) for x in list_target_time]
-            GM.list_val = [float(x) for x in list_target_amp]
-            self.list_model_time = GM.list_time
-            self.list_model_amp = GM.list_val
-
-            GM.Peak_extract2(self.index_range)
             GM.Slicing_data()
             GM.Selection_A(sigma=2)
             GM.Selection_C(sigma=2)
@@ -118,15 +103,15 @@ class Bridge:
         except:
             return None, None
 
-    def setting_for_anzai(self,):
-        self.time_for_1breath = 2
-        self.datarate = 100
-        self.interpolation_step = 100
-        self.index_range = self.datarate * self.time_for_1breath
-
     def setting_for_abches(self,):
         self.time_for_1breath = 2
         self.datarate = 35
+        self.interpolation_step = 100
+        self.index_range = self.datarate * self.time_for_1breath
+    
+    def setting_for_anzai(self,):
+        self.time_for_1breath = 2
+        self.datarate = 100
         self.interpolation_step = 100
         self.index_range = self.datarate * self.time_for_1breath
 
@@ -166,6 +151,9 @@ class Bridge:
 
     def get_guide_data(self,):
         return self.list_model_time, self.list_model_amp
+    
+    def get_raw_peaks(self,):
+        return self.list_raw_time_peak, self.list_raw_amp_peak
 
     def get_raw_yrange(self):
         return min(self.list_raw_amp),max(self.list_raw_amp)

@@ -6,7 +6,6 @@ from PyQt6.QtCore import Qt, QMargins, QPointF
 class modelingchart_handler:
     def __init__(self):
         self.chart_modeling = QChart()
-        # self.is_phase_changed = False
         self.list_guide_time = None
         self.list_guide_amp = None
         self.list_guide_amp_shown = None
@@ -87,7 +86,6 @@ class modelingchart_handler:
             return
         
         self.reset_modeling_chart()
-        # self.chart_modeling.removeAllSeries()
         len_data = len(self.list_guide_time)
         
         self.series_modeling = QLineSeries()
@@ -112,6 +110,3 @@ class modelingchart_handler:
         self.series_modeling.attachAxis(self.axis_x_modeling)
         self.series_modeling.attachAxis(self.axis_y_modeling)
                     
-
-
-        
