@@ -193,6 +193,29 @@ class setting_handler:
         button_modeling_peaks.setFixedSize(80, self.setting_comp_height)
         layout_modeling_setting_1.addWidget(button_modeling_peaks)        
 
+        ### ----------------------
+        ### Select button
+        ### ----------------------
+        button_modeling_select = QtWidgets.QPushButton("Select")
+        button_modeling_select.clicked.connect(lambda: self.show_sel())
+        button_modeling_select.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;xw
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        button_modeling_select.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_1.addWidget(button_modeling_select)     
 
         ### ----------------------
         ### Run button
@@ -217,30 +240,6 @@ class setting_handler:
         """)
         button_modeling_run.setFixedSize(80, self.setting_comp_height)
         layout_modeling_setting_1.addWidget(button_modeling_run)        
-
-        ### ----------------------
-        ### Select button
-        ### ----------------------
-        button_modeling_select = QtWidgets.QPushButton("Select")
-        button_modeling_select.clicked.connect(lambda: self.not_dev())
-        button_modeling_select.setStyleSheet("""
-            QPushButton {
-                background-color: #aaaaaa;
-                color: white;
-                font-size: 14px;
-                padding: 8px 16px;
-                border: none;
-                border-radius: 6px;xw
-            }
-            QPushButton:hover {
-                background-color: #888888;
-            }
-            QPushButton:pressed {
-                background-color: #666666;
-            }
-        """)
-        button_modeling_select.setFixedSize(80, self.setting_comp_height)
-        layout_modeling_setting_1.addWidget(button_modeling_select)     
 
 
         ### ----------------------
@@ -340,40 +339,9 @@ class setting_handler:
         
 
     def raw_chart_range_reset(self,):
-        try:
-            # xmin = min(self.list_raw_time)
-            # xmax = max(self.list_raw_time)
-            # ymin = min(self.list_raw_amp)
-            # ymax = max(self.list_raw_amp)
-
-            xmin,xmax,ymin,ymax = self.get_raw_xyrange()
-
-        except:
-            self.print_terminal_colored("No data")
-            return
-        
-        self.min_raw_val = ymin
-        self.max_raw_val = ymax
-        self.sliced_min_time = xmin
-        self.sliced_max_time = xmax
-
-        # self.axis_x_raw.setRange(xmin,xmax)
-        # self.axis_y_raw.setRange(ymin,ymax)
-        self.set_axis_range()
-
-        self.lineedit_xmin.setText(str(xmin))
-        self.lineedit_xmax.setText(str(xmax))
-        self.lineedit_ymin.setText(str(ymin))
-        self.lineedit_ymax.setText(str(ymax))
-
-        self.reset_slicing()
-        # self.axis_y_modeling.setRange(self.min_raw_val,self.max_raw_val)
-        self.set_modeling_yaix_range_raw()
-
-        self.print_terminal("Range is reseted")
-
-
-
+        self.reset_raw_chart()
+        self.Show_raw_chart()
+        self.print_terminal("Chart is reseted")
 
     def raw_chart_range_submit(self,):
         try:
@@ -390,12 +358,9 @@ class setting_handler:
         self.sliced_min_time = xmin
         self.sliced_max_time = xmax
 
-        # self.axis_x_raw.setRange(xmin,xmax)
-        # self.axis_y_raw.setRange(ymin,ymax)
         self.set_axis_range()
-
+        
         self.range_slicing(xmin,xmax)
-        # self.axis_y_modeling.setRange(self.min_raw_val,self.max_raw_val)
         self.set_modeling_yaix_range_new()
 
         self.print_terminal("Range is changed: {}-{} / {}-{}".format(xmin,xmax,ymin,ymax))

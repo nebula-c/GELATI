@@ -11,6 +11,8 @@ def total_callback(ctx):
     get_raw_chart_range         = ctx.rawchart_handler.get_raw_chart_range
     set_axis_range              = ctx.rawchart_handler.set_axis_range
     show_peaks                  = ctx.rawchart_handler.show_peaks
+    show_sel                    = ctx.rawchart_handler.show_sel
+    reset_raw_chart             = ctx.rawchart_handler.reset_raw_chart
     set_modeling_yaix_range_new = ctx.modelingchart_handler.set_modeling_yaix_range_new
     set_modeling_yaix_range_raw = ctx.modelingchart_handler.set_modeling_yaix_range_raw
     Show_modeling_chart         = ctx.modelingchart_handler.Show_modeling_chart
@@ -28,6 +30,7 @@ def total_callback(ctx):
     reset_slicing               = ctx.Bridge.reset_slicing
     seeking_peak                = ctx.Bridge.seeking_peak
     get_raw_peaks               = ctx.Bridge.get_raw_peaks
+    get_selected_data           = ctx.Bridge.get_selected_data
     
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
@@ -43,6 +46,7 @@ def total_callback(ctx):
     ctx.rawchart_handler.set_callback("set_lineedit_raw_range",set_lineedit_raw_range)
     ctx.rawchart_handler.set_callback("get_sliced_range",get_sliced_range)
     ctx.rawchart_handler.set_callback("get_raw_peaks",get_raw_peaks)
+    ctx.rawchart_handler.set_callback("get_selected_data",get_selected_data)
     ctx.modelingchart_handler.set_callback("print_terminal",print_terminal)
     ctx.modelingchart_handler.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.modelingchart_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
@@ -63,6 +67,9 @@ def total_callback(ctx):
     ctx.setting_handler.set_callback("Change_phase",Change_phase)
     ctx.setting_handler.set_callback("seeking_peak",seeking_peak)
     ctx.setting_handler.set_callback("reset_modeling_chart",reset_modeling_chart)
+    ctx.setting_handler.set_callback("show_sel",show_sel)
+    ctx.setting_handler.set_callback("reset_raw_chart",reset_raw_chart)
+    ctx.setting_handler.set_callback("Show_raw_chart",Show_raw_chart)
     ctx.Bridge.set_callback("print_terminal",print_terminal)
     ctx.Bridge.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)

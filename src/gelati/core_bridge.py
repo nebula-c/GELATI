@@ -7,6 +7,8 @@ class Bridge:
         self.list_raw_amp       = None
         self.list_raw_time_peak = None
         self.list_raw_amp_peak  = None
+        self.list_sel_time      = None
+        self.list_sel_amp       = None
         self.list_model_time    = None
         self.list_model_amp     = None
         self.list_sliced_time   = None
@@ -64,7 +66,8 @@ class Bridge:
             list_target_time = self.list_raw_time
             list_target_amp = self.list_raw_amp
         else:
-            return None, None
+            self.print_terminal_colored("Failed to seek peaks")
+            return
 
         GM.Set_interpolation_step(self.interpolation_step)
         GM.list_time = [float(x) for x in list_target_time]
@@ -80,17 +83,32 @@ class Bridge:
         except:
             self.print_terminal_colored("Failed to seek peaks")
 
+
+    def get_selected_data(self,):
+        GM = self.GM
+        if self.list_raw_amp_peak is None or self.list_raw_time_peak is None:
+            self.print_terminal_colored("Please ckeck peaks by pressing the peaks button")
+
+        GM.Slicing_data()
+        GM.Selection_A(sigma=2)
+        GM.Selection_C(sigma=2)
+        
+        self.list_sel_time = GM.list_sliced_time
+        self.list_sel_amp  = GM.list_sliced_val
+
+        return GM.list_sliced_time, GM.list_sliced_val
+
     
     def run_modeling(self,):
         
         GM = self.GM
         if self.list_raw_amp_peak is None or self.list_raw_time_peak is None:
-            self.print_terminal_colored("Please seak peaks by pressing the peaks button")
+            self.print_terminal_colored("Please ckeck peaks by pressing the peaks button")
+        
+        if self.list_sel_time is None or self.list_sel_amp is None:
+            self.print_terminal_colored("Please check selected data by pressing the select button")
 
         try:
-            GM.Slicing_data()
-            GM.Selection_A(sigma=2)
-            GM.Selection_C(sigma=2)
             GM.Period_generate()
             GM.Guide_sample()
             
