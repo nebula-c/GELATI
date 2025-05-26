@@ -67,6 +67,7 @@ class rawchart_handler:
             for series in self.chart_raw.series():
                 self.chart_raw.removeSeries(series)
             
+            series_file.setColor(QColor("#0000FF"))
             self.chart_raw.addSeries(series_file)
             series_file.attachAxis(self.axis_x_raw)
             series_file.attachAxis(self.axis_y_raw)
@@ -131,7 +132,7 @@ class rawchart_handler:
             for x, y in zip(each_list_selected_sliced_time, each_list_selected_sliced_val):
                 series_each.append(QPointF(float(x), float(y)))
                 
-            series_each.setColor(QColor("red"))
+            series_each.setColor(QColor("#44FF00"))
             self.chart_raw.addSeries(series_each)
             series_each.attachAxis(self.axis_x_raw)
             series_each.attachAxis(self.axis_y_raw)

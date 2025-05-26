@@ -134,13 +134,13 @@ class Bridge:
         self.index_range = self.datarate * self.time_for_1breath
 
     def setting_for_rgsc(self,):
-        self.time_for_1breath = 2
+        self.time_for_1breath = 2.5
         self.datarate = 25
         self.interpolation_step = 100
         self.index_range = self.datarate * self.time_for_1breath
 
     def setting_for_simrt(self,):
-        self.time_for_1breath = 2
+        self.time_for_1breath = 2.5
         self.datarate = 35
         self.interpolation_step = 100
         self.index_range = self.datarate * self.time_for_1breath
