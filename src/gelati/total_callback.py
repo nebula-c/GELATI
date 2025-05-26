@@ -18,9 +18,9 @@ def total_callback(ctx):
     Show_modeling_chart         = ctx.modelingchart_handler.Show_modeling_chart
     Change_phase                = ctx.modelingchart_handler.Change_phase
     reset_modeling_chart        = ctx.modelingchart_handler.reset_modeling_chart
-    set_lineedit_raw_range      = ctx.setting_handler.set_lineedit_raw_range
-    get_sliced_range            = ctx.setting_handler.get_sliced_range
-    get_new_yrange              = ctx.setting_handler.get_new_yrange
+    set_lineedit_raw_range      = ctx.control_handler.set_lineedit_raw_range
+    get_sliced_range            = ctx.control_handler.get_sliced_range
+    get_new_yrange              = ctx.control_handler.get_new_yrange
     set_bridge_raw_data         = ctx.Bridge.set_raw_data
     range_slicing               = ctx.Bridge.range_slicing
     get_raw_yrange              = ctx.Bridge.get_raw_yrange
@@ -53,23 +53,24 @@ def total_callback(ctx):
     ctx.modelingchart_handler.set_callback("get_raw_yrange",get_raw_yrange)
     ctx.modelingchart_handler.set_callback("get_new_yrange",get_new_yrange)
     ctx.modelingchart_handler.set_callback("get_guide_data",get_guide_data)
-    ctx.setting_handler.set_callback("print_terminal",print_terminal)
-    ctx.setting_handler.set_callback("print_terminal_colored",print_terminal_colored)
-    ctx.setting_handler.set_callback("not_dev",ctx.not_dev)
-    ctx.setting_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
-    ctx.setting_handler.set_callback("set_axis_range",set_axis_range)
-    ctx.setting_handler.set_callback("range_slicing",range_slicing)
-    ctx.setting_handler.set_callback("set_modeling_yaix_range_new",set_modeling_yaix_range_new)
-    ctx.setting_handler.set_callback("set_modeling_yaix_range_raw",set_modeling_yaix_range_raw)
-    ctx.setting_handler.set_callback("guide_modeling_run",guide_modeling_run)
-    ctx.setting_handler.set_callback("get_raw_xyrange",get_raw_xyrange)
-    ctx.setting_handler.set_callback("reset_slicing",reset_slicing)
-    ctx.setting_handler.set_callback("Change_phase",Change_phase)
-    ctx.setting_handler.set_callback("seeking_peak",seeking_peak)
-    ctx.setting_handler.set_callback("reset_modeling_chart",reset_modeling_chart)
-    ctx.setting_handler.set_callback("show_sel",show_sel)
-    ctx.setting_handler.set_callback("reset_raw_chart",reset_raw_chart)
-    ctx.setting_handler.set_callback("Show_raw_chart",Show_raw_chart)
+    ctx.control_handler.set_callback("print_terminal",print_terminal)
+    ctx.control_handler.set_callback("print_terminal_colored",print_terminal_colored)
+    ctx.control_handler.set_callback("not_dev",ctx.not_dev)
+    ctx.control_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
+    ctx.control_handler.set_callback("set_axis_range",set_axis_range)
+    ctx.control_handler.set_callback("range_slicing",range_slicing)
+    ctx.control_handler.set_callback("set_modeling_yaix_range_new",set_modeling_yaix_range_new)
+    ctx.control_handler.set_callback("set_modeling_yaix_range_raw",set_modeling_yaix_range_raw)
+    ctx.control_handler.set_callback("guide_modeling_run",guide_modeling_run)
+    ctx.control_handler.set_callback("get_raw_xyrange",get_raw_xyrange)
+    ctx.control_handler.set_callback("reset_slicing",reset_slicing)
+    ctx.control_handler.set_callback("Change_phase",Change_phase)
+    ctx.control_handler.set_callback("seeking_peak",seeking_peak)
+    ctx.control_handler.set_callback("reset_modeling_chart",reset_modeling_chart)
+    ctx.control_handler.set_callback("show_sel",show_sel)
+    ctx.control_handler.set_callback("reset_raw_chart",reset_raw_chart)
+    ctx.control_handler.set_callback("Show_raw_chart",Show_raw_chart)
+    ctx.control_handler.set_callback("set_bridge_raw_data",set_bridge_raw_data)
     ctx.Bridge.set_callback("print_terminal",print_terminal)
     ctx.Bridge.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)

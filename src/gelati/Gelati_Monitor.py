@@ -8,7 +8,7 @@ from gelati import fileloader_handler
 from gelati import rawchart_handler
 from gelati import modelingchart_handler
 from gelati import terminal_handler
-from gelati import setting_handler
+from gelati import control_handler
 from gelati import total_callback
 
 
@@ -31,7 +31,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.terminal_handler = terminal_handler.terminal_handler()
         self.fileloader_handler = fileloader_handler.fileloader_handler()
         self.rawchart_handler = rawchart_handler.rawchart_handler()
-        self.setting_handler = setting_handler.setting_handler()
+        self.control_handler = control_handler.control_handler()
         self.modelingchart_handler = modelingchart_handler.modelingchart_handler()
         
         self.Basic_Framing()
@@ -105,10 +105,10 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.layout.addStretch()
 
         # ### ---------------------------------------------
-        # ### Settings_widget
+        # ### Control_widget
         # ### ---------------------------------------------
-        settings_widget = self.setting_handler.settings_widget()
-        self.layout.addWidget(settings_widget,stretch=1)
+        control_widget = self.control_handler.control_widget()
+        self.layout.addWidget(control_widget,stretch=1)
         
         ### ---------------------------------------------
         ### Terminal

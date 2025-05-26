@@ -24,6 +24,15 @@ class Bridge:
 
     def set_raw_data(self,):
         self.list_raw_time, self.list_raw_amp = self.get_raw_data_from_file()
+        self.list_raw_time_peak = None
+        self.list_raw_amp_peak  = None
+        self.list_sel_time      = None
+        self.list_sel_amp       = None
+        self.list_model_time    = None
+        self.list_model_amp     = None
+        self.list_sliced_time   = None
+        self.list_sliced_amp    = None
+        self.model_period       = None
 
     def set_callback(self, name, func):
         setattr(self, name, func)

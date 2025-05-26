@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 
-class setting_handler:
+class control_handler:
     setting_comp_height = 30
     layout_settings = None
     layout_raw_setting = None
@@ -22,7 +22,7 @@ class setting_handler:
     def set_callback(self, name, func):
         setattr(self, name, func)
     
-    def settings_widget(self,):
+    def control_widget(self,):
         self.layout_settings = QtWidgets.QHBoxLayout()
         self.layout_raw_setting = QtWidgets.QVBoxLayout()
         self.layout_raw_setting_label = QtWidgets.QHBoxLayout()
@@ -54,10 +54,10 @@ class setting_handler:
         layout_settings.addWidget(widgets_modeling_buttons,stretch=1)
         
         
-        settings_widget = QtWidgets.QWidget()        
-        settings_widget.setLayout(layout_settings)
+        control_widget = QtWidgets.QWidget()        
+        control_widget.setLayout(layout_settings)
 
-        return settings_widget
+        return control_widget
     
         
 
@@ -341,6 +341,7 @@ class setting_handler:
     def raw_chart_range_reset(self,):
         self.reset_raw_chart()
         self.Show_raw_chart()
+        self.set_bridge_raw_data()
         self.print_terminal("Chart is reseted")
 
     def raw_chart_range_submit(self,):
