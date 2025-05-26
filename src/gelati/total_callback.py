@@ -55,7 +55,6 @@ def total_callback(ctx):
     ctx.modelingchart_handler.set_callback("get_guide_data",get_guide_data)
     ctx.control_handler.set_callback("print_terminal",print_terminal)
     ctx.control_handler.set_callback("print_terminal_colored",print_terminal_colored)
-    ctx.control_handler.set_callback("not_dev",ctx.not_dev)
     ctx.control_handler.set_callback("open_setting_window",open_setting_window)
     ctx.control_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
     ctx.control_handler.set_callback("set_axis_range",set_axis_range)
@@ -80,5 +79,5 @@ def total_callback(ctx):
     ctx.Bridge.set_callback("show_peaks",show_peaks)
     ctx.setting_handler.set_callback("print_terminal",print_terminal)
     ctx.setting_handler.set_callback("print_terminal_colored",print_terminal_colored)
-    
+    ctx.setting_handler.set_callback("not_dev",ctx.not_dev)
     

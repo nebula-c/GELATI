@@ -7,9 +7,9 @@ class Window_Setting(QtWidgets.QWidget):
         self.setWindowTitle("Settings")
     
     def set_widget(self,mywidget):
-        layout_setting = QtWidgets.QHBoxLayout()
-        layout_setting.addWidget(mywidget)
-        self.setLayout(layout_setting)
+        layout_setting_total = QtWidgets.QHBoxLayout()
+        layout_setting_total.addWidget(mywidget)
+        self.setLayout(layout_setting_total)
     
     
 class setting_handler:
@@ -26,13 +26,47 @@ class setting_handler:
 
 
     def widget_total_setting(self,):
-        layout_settings = QtWidgets.QHBoxLayout()
+        layout_settings = QtWidgets.QVBoxLayout()
+        layout_setting_main = QtWidgets.QHBoxLayout()
+        layout_labels = QtWidgets.QVBoxLayout()
+        layout_lineedits = QtWidgets.QVBoxLayout()
+        layout_setting_main.addLayout(layout_labels)
+        layout_setting_main.addLayout(layout_lineedits)
+
+        layout_labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
+        layout_lineedit_interpolation_step = QtWidgets.QLineEdit()
+        layout_labels.addWidget(layout_labels_interpolation_step)
+        layout_lineedits.addWidget(layout_lineedit_interpolation_step)
+
+        layout_labels_expected_time_1breath = QtWidgets.QLabel("Expected time for 1 breath (sec)")
+        layout_lineedit_expected_time_1breath = QtWidgets.QLineEdit()
+        layout_labels.addWidget(layout_labels_expected_time_1breath)
+        layout_lineedits.addWidget(layout_lineedit_expected_time_1breath)
+
+        layout_labels_datarate = QtWidgets.QLabel("Datarate(# of data for 1min)")
+        layout_lineedit_datarate = QtWidgets.QLineEdit()
+        layout_labels.addWidget(layout_labels_datarate)
+        layout_lineedits.addWidget(layout_lineedit_datarate)
         
+        layout_settings.addLayout(layout_setting_main)
+
+
+
+        line1 = QtWidgets.QFrame()
+        line1.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        line1.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        layout_settings.addWidget(line1)
+
+
+
+
+        layout_bottom_buttons = QtWidgets.QHBoxLayout()
         save_buttons = self.save_buttons()
         cancel_buttons = self.cancel_buttons()
+        layout_bottom_buttons.addWidget(save_buttons)
+        layout_bottom_buttons.addWidget(cancel_buttons)
+        layout_settings.addLayout(layout_bottom_buttons)
 
-        layout_settings.addWidget(save_buttons)
-        layout_settings.addWidget(cancel_buttons)
 
         widget_total = QtWidgets.QWidget()
         widget_total.setLayout(layout_settings)
@@ -85,10 +119,15 @@ class setting_handler:
 
     def func_save(self):
         self.print_terminal("Setting is changed")
+        self.not_dev()
         self.Window_Setting.close()
     
     def func_cancel(self):
         self.Window_Setting.close()
     
     
-        
+    def read_setting_value(self,):
+        return
+    
+    def save_setting_value(self,):
+        return
