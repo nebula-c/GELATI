@@ -269,11 +269,11 @@ class control_handler:
 
 
         ### ----------------------
-        ### Specific button
+        ### Setting button
         ### ----------------------
-        button_modeling_specific = QtWidgets.QPushButton("Specific")
-        button_modeling_specific.clicked.connect(lambda: self.open_setting_window())
-        button_modeling_specific.setStyleSheet("""
+        button_modeling_setting = QtWidgets.QPushButton("Setting")
+        button_modeling_setting.clicked.connect(lambda: self.open_setting_window())
+        button_modeling_setting.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;
                 color: white;
@@ -289,8 +289,8 @@ class control_handler:
                 background-color: #666666;
             }
         """)
-        button_modeling_specific.setFixedSize(80, self.setting_comp_height)
-        layout_modeling_setting_2.addWidget(button_modeling_specific)           
+        button_modeling_setting.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_2.addWidget(button_modeling_setting)
 
 
         ### ----------------------
