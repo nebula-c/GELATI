@@ -161,6 +161,16 @@ class setting_handler:
         layout_modeling_setting = QtWidgets.QVBoxLayout()
         layout_modeling_setting.setContentsMargins(10,0,0,10)
 
+        layout_modeling_setting_1 = QtWidgets.QHBoxLayout()
+        layout_modeling_setting_2 = QtWidgets.QHBoxLayout()
+
+        layout_modeling_setting_1.addStretch()
+        layout_modeling_setting_2.addStretch()
+
+
+        ### ----------------------
+        ### Run button
+        ### ----------------------
         button_modeling_run = QtWidgets.QPushButton("Run")
         button_modeling_run.clicked.connect(lambda: self.guide_modeling_run())
         button_modeling_run.setStyleSheet("""
@@ -179,8 +189,41 @@ class setting_handler:
                 background-color: #666666;
             }
         """)
-        layout_modeling_setting.addWidget(button_modeling_run)        
+        button_modeling_run.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_1.addWidget(button_modeling_run)        
 
+
+
+
+        ### ----------------------
+        ### Phase button
+        ### ----------------------
+        button_modeling_phase = QtWidgets.QPushButton("Phase")
+        button_modeling_phase.clicked.connect(lambda: self.Change_phase())
+        button_modeling_phase.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;xw
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        button_modeling_phase.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_1.addWidget(button_modeling_phase)        
+
+
+
+        ### ----------------------
+        ### Specific button
+        ### ----------------------
         button_modeling_specific = QtWidgets.QPushButton("Specific")
         button_modeling_specific.clicked.connect(lambda: self.not_dev())
         button_modeling_specific.setStyleSheet("""
@@ -199,8 +242,13 @@ class setting_handler:
                 background-color: #666666;
             }
         """)
-        layout_modeling_setting.addWidget(button_modeling_specific)        
+        button_modeling_specific.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_2.addWidget(button_modeling_specific)        
 
+
+        ### ----------------------
+        ### Export button
+        ### ----------------------
         button_modeling_export = QtWidgets.QPushButton("Export")
         button_modeling_export.clicked.connect(lambda: self.file_export())
         button_modeling_export.setStyleSheet("""
@@ -219,11 +267,23 @@ class setting_handler:
                 background-color: #666666;
             }
         """)
-        layout_modeling_setting.addWidget(button_modeling_export)        
+        button_modeling_export.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_2.addWidget(button_modeling_export)        
 
 
+
+        
+
+        layout_modeling_setting_1.addStretch()
+        layout_modeling_setting_1.setSpacing(1)
+        layout_modeling_setting_2.addStretch()
+        layout_modeling_setting_2.setSpacing(1)
         layout_modeling_setting.addStretch()
         layout_modeling_setting.setSpacing(1)
+
+        layout_modeling_setting.addLayout(layout_modeling_setting_1)
+        layout_modeling_setting.addLayout(layout_modeling_setting_2)
+
         modeling_widget = QtWidgets.QWidget()        
         modeling_widget.setLayout(layout_modeling_setting)
 

@@ -6,6 +6,10 @@ from PyQt6.QtCore import Qt, QMargins, QPointF
 class modelingchart_handler:
     def __init__(self):
         self.chart_modeling = QChart()
+        # self.is_phase_changed = False
+        self.list_guide_time = None
+        self.list_guide_amp = None
+        self.list_guide_amp_shown = None
 
     def set_callback(self, name, func):
         setattr(self, name, func)
@@ -53,24 +57,60 @@ class modelingchart_handler:
 
     def Show_modeling_chart(self,):
         try:
-            series_modeling = QLineSeries()
+            self.series_modeling = QLineSeries()
             self.set_giude_data()
             for x, y in zip(self.list_guide_time, self.list_guide_amp):
-                series_modeling.append(QPointF(float(x), float(y)))
+                self.series_modeling.append(QPointF(float(x), float(y)))
             for series in self.chart_modeling.series():
                 self.chart_modeling.removeSeries(series)
                 
-            self.chart_modeling.addSeries(series_modeling)
-            series_modeling.attachAxis(self.axis_x_modeling)
-            series_modeling.attachAxis(self.axis_y_modeling)
+            self.chart_modeling.addSeries(self.series_modeling)
+            self.series_modeling.attachAxis(self.axis_x_modeling)
+            self.series_modeling.attachAxis(self.axis_y_modeling)
             self.axis_x_modeling.setRange(min(self.list_guide_time),max(self.list_guide_time))
             _,_,raw_chart_val_min,raw_chart_val_max = self.get_raw_chart_range()
             self.axis_y_modeling.setRange(raw_chart_val_min,raw_chart_val_max)
-            # self.set_modeling_yaix_range_raw()
-            
+            self.list_guide_amp_shown = self.list_guide_amp
 
             self.chart_modeling.setTitle("Modeling(range: {}-{})".format(self.list_guide_time, self.list_guide_amp)) 
             self.print_terminal("Successed to generate guide-signal")
 
         except:
             self.print_terminal("Failed to show guide-signal")
+
+    def Change_phase(self,):
+        if self.list_guide_time is None:
+            self.print_terminal_colored("Please load raw data first.")
+            return
+        
+        self.chart_modeling.removeAllSeries()
+        len_data = len(self.list_guide_time)
+
+        
+
+        
+        self.series_modeling = QLineSeries()
+        list_temp_amp = []
+        list_changed_amp = []
+
+        for i in range(len_data):
+            y_temp = self.list_guide_amp_shown[i]
+            if i < len_data/4:
+                list_temp_amp.append(y_temp)
+            else:
+                list_changed_amp.append(y_temp)
+            
+        for temp_y in list_temp_amp:
+            list_changed_amp.append(temp_y)
+        self.list_guide_amp_shown = list_changed_amp
+
+        for x, y in zip(self.list_guide_time, list_changed_amp):
+            self.series_modeling.append(QPointF(float(x), float(y)))
+
+        self.chart_modeling.addSeries(self.series_modeling)
+        self.series_modeling.attachAxis(self.axis_x_modeling)
+        self.series_modeling.attachAxis(self.axis_y_modeling)
+                    
+
+
+        

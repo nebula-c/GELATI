@@ -13,6 +13,7 @@ def total_callback(ctx):
     set_modeling_yaix_range_new = ctx.modelingchart_handler.set_modeling_yaix_range_new
     set_modeling_yaix_range_raw = ctx.modelingchart_handler.set_modeling_yaix_range_raw
     Show_modeling_chart         = ctx.modelingchart_handler.Show_modeling_chart
+    Change_phase                = ctx.modelingchart_handler.Change_phase
     set_lineedit_raw_range      = ctx.setting_handler.set_lineedit_raw_range
     get_sliced_range            = ctx.setting_handler.get_sliced_range
     get_new_yrange              = ctx.setting_handler.get_new_yrange
@@ -23,6 +24,7 @@ def total_callback(ctx):
     get_guide_data              = ctx.Bridge.get_guide_data
     get_raw_xyrange             = ctx.Bridge.get_raw_xyrange
     reset_slicing               = ctx.Bridge.reset_slicing
+    
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
     ctx.fileloader_handler.set_callback("print_terminal_colored",print_terminal_colored)
@@ -53,6 +55,7 @@ def total_callback(ctx):
     ctx.setting_handler.set_callback("guide_modeling_run",guide_modeling_run)
     ctx.setting_handler.set_callback("get_raw_xyrange",get_raw_xyrange)
     ctx.setting_handler.set_callback("reset_slicing",reset_slicing)
+    ctx.setting_handler.set_callback("Change_phase",Change_phase)
     ctx.Bridge.set_callback("print_terminal",print_terminal)
     ctx.Bridge.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)

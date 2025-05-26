@@ -26,11 +26,14 @@ class Bridge:
 
     def guide_modeling_run(self,):
         self.filetype = self.get_filetype()
+        if self.list_raw_time is None:
+            self.print_terminal_colored("Please load raw data first.")
+            return
         if self.filetype=="ANZAI":
             self.list_model_time, self.list_model_amp = self.run_anzai()
 
             if self.list_model_time is None or self.list_model_amp is None:
-                self.print_terminal_colored("Modeling is not working!!!")
+                self.print_terminal_colored("Please load raw data first.")
                 return
             else:
                 self.get_guide_data()
