@@ -78,16 +78,17 @@ class modelingchart_handler:
         except:
             self.print_terminal("Failed to show guide-signal")
 
+    def reset_modeling_chart(self,):
+        self.chart_modeling.removeAllSeries()
+
     def Change_phase(self,):
         if self.list_guide_time is None:
             self.print_terminal_colored("Please load raw data first.")
             return
         
-        self.chart_modeling.removeAllSeries()
+        self.reset_modeling_chart()
+        # self.chart_modeling.removeAllSeries()
         len_data = len(self.list_guide_time)
-
-        
-
         
         self.series_modeling = QLineSeries()
         list_temp_amp = []

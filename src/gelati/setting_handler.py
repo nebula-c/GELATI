@@ -168,6 +168,32 @@ class setting_handler:
         layout_modeling_setting_2.addStretch()
 
 
+
+        ### ----------------------
+        ### Peaks button
+        ### ----------------------
+        button_modeling_peaks = QtWidgets.QPushButton("Peaks")
+        button_modeling_peaks.clicked.connect(lambda: self.seeking_peak())
+        button_modeling_peaks.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;xw
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        button_modeling_peaks.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_1.addWidget(button_modeling_peaks)        
+
+
         ### ----------------------
         ### Run button
         ### ----------------------
@@ -244,6 +270,30 @@ class setting_handler:
         """)
         button_modeling_specific.setFixedSize(80, self.setting_comp_height)
         layout_modeling_setting_2.addWidget(button_modeling_specific)        
+
+        ### ----------------------
+        ### Reset button
+        ### ----------------------
+        button_modeling_reset = QtWidgets.QPushButton("Reset")
+        button_modeling_reset.clicked.connect(lambda: self.reset_modeling_chart())
+        button_modeling_reset.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;xw
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        button_modeling_reset.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_2.addWidget(button_modeling_reset)        
 
 
         ### ----------------------

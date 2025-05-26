@@ -5,6 +5,8 @@ class Bridge:
     def __init__(self,):
         self.list_raw_time      = []
         self.list_raw_amp       = []
+        self.list_raw_time_peak = []
+        self.list_raw_amp_peak  = []
         self.list_model_time    = []
         self.list_model_amp     = []
         self.list_sliced_time   = None
@@ -52,6 +54,34 @@ class Bridge:
         except:
             self.print_terminal_colored("Modeling is not working")    
             
+    def seeking_peak(self,):
+        GM = self.GM
+        
+
+        if self.list_sliced_time is not None and self.list_sliced_amp is not None:
+            list_target_time = self.list_sliced_time
+            list_target_amp = self.list_sliced_amp
+        elif self.list_sliced_time is None and self.list_sliced_amp is None:
+            list_target_time = self.list_raw_time
+            list_target_amp = self.list_raw_amp
+        else:
+            return None, None
+
+
+        
+        GM.Set_interpolation_step(self.interpolation_step)
+        GM.list_time = [float(x) for x in list_target_time]
+        GM.list_val = [float(x) for x in list_target_amp]
+        self.list_model_time = GM.list_time
+        self.list_model_amp = GM.list_val
+
+        GM.Peak_extract2(self.index_range)
+        self.list_raw_time_peak = GM.list_time_peak
+        self.list_raw_amp_peak = GM.list_cm_peak
+
+
+        # return self.list_raw_time_peak, self.list_raw_amp_peak
+
     
     def run_modeling(self,):
         GM = self.GM
