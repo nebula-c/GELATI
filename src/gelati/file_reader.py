@@ -7,7 +7,7 @@ def read_abches(filepath):
         list_amp = df['TerminalExpirationLine'].values
         list_timestamp = df['MonitoringID'].values
         return list_timestamp, list_amp
-        
+
     except:
         return None, None
 
@@ -38,3 +38,43 @@ def read_anzai(filepath):
     except:
         return None, None
 
+
+def read_rgsc(filepath):
+    try:
+        keyword = "Data_layout"
+        with open(filepath, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                if keyword in line:
+                    _, value_part = line.split("=", 1)
+                    myheaders = value_part.strip().split(",")
+            start_line = next(i for i, line in enumerate(lines) if "[Data]" in line)     + 1
+            df = pd.read_csv(filepath, skiprows=start_line,header=None,names=myheaders)
+
+            list_amp = df['amplitude'].values
+            list_timestamp = df['timestamp'].values
+
+        return list_timestamp, list_amp
+        
+    except:
+        return None, None
+
+def read_simrt(filepath):
+    try:
+        keyword = "Data_layout"
+        with open(filepath, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                if keyword in line:
+                    _, value_part = line.split("=", 1)
+                    myheaders = value_part.strip().split(",")
+            start_line = next(i for i, line in enumerate(lines) if "[Data]" in line)     + 1
+            df = pd.read_csv(filepath, skiprows=start_line,header=None,names=myheaders)
+
+            list_amp = df['amplitude'].values
+            list_timestamp = df['timestamp'].values
+
+        return list_timestamp, list_amp
+        
+    except:
+        return None, None

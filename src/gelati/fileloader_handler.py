@@ -40,7 +40,7 @@ class fileloader_handler:
 
     def combomox_filetype(self,):
         combomox_filetype = QtWidgets.QComboBox()
-        combomox_filetype.addItems(["Abches","Anzai"])
+        combomox_filetype.addItems(["Abches","Anzai","RGSC","SimRT"])
         combomox_filetype.setStyleSheet("""
             QComboBox {
                 background-color: white;
@@ -60,21 +60,22 @@ class fileloader_handler:
         if file_path:
             if self.filetype == "Abches":
                 self.list_raw_time, self.list_raw_amp = file_reader.read_abches(file_path)
-                if self.list_raw_time is not None and self.list_raw_amp is not None:
-                    self.print_terminal("File {} is opened".format(file_path))
-                else:
-                    self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
-                    return
             elif self.filetype == "Anzai":
                 self.list_raw_time, self.list_raw_amp = file_reader.read_anzai(file_path)
-                if self.list_raw_time is not None and self.list_raw_amp is not None:
-                    self.print_terminal("File {} is opened".format(file_path))
-                else:
-                    self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
-                    return
+            elif self.filetype == "RGSC":
+                self.list_raw_time, self.list_raw_amp = file_reader.read_rgsc(file_path)
+            elif self.filetype == "SimRT":
+                self.list_raw_time, self.list_raw_amp = file_reader.read_simrt(file_path)
             else:
                 self.print_terminal_colored("Undefined file type", color='#ff0000')
                 return
+            
+            if self.list_raw_time is not None and self.list_raw_amp is not None:
+                self.print_terminal("File {} is opened".format(file_path))
+            else:
+                self.print_terminal_colored("Cannot read file {}.".format(file_path), color='#ff0000')    
+                return
+            
             
             self.filename = file_path
             self.set_raw_chart_title()

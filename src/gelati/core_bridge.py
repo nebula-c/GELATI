@@ -34,6 +34,10 @@ class Bridge:
             self.setting_for_abches()
         elif self.filetype=="Anzai":
             self.setting_for_anzai()
+        elif self.filetype=="RGSC":
+            self.setting_for_rgsc()
+        elif self.filetype=="SimRT":
+            self.setting_for_simrt()
         else:
             self.print_terminal_colored("Please check the type of file.")
         
@@ -91,6 +95,18 @@ class Bridge:
         self.index_range = self.datarate * self.time_for_1breath
 
     def setting_for_abches(self,):
+        self.time_for_1breath = 2
+        self.datarate = 35
+        self.interpolation_step = 100
+        self.index_range = self.datarate * self.time_for_1breath
+
+    def setting_for_rgsc(self,):
+        self.time_for_1breath = 2
+        self.datarate = 25
+        self.interpolation_step = 100
+        self.index_range = self.datarate * self.time_for_1breath
+
+    def setting_for_simrt(self,):
         self.time_for_1breath = 2
         self.datarate = 35
         self.interpolation_step = 100
