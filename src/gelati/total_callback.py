@@ -31,7 +31,7 @@ def total_callback(ctx):
     seeking_peak                = ctx.Bridge.seeking_peak
     get_raw_peaks               = ctx.Bridge.get_raw_peaks
     get_selected_data           = ctx.Bridge.get_selected_data
-    
+    open_setting_window         = ctx.setting_handler.open_setting_window
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
     ctx.fileloader_handler.set_callback("print_terminal_colored",print_terminal_colored)
@@ -56,6 +56,7 @@ def total_callback(ctx):
     ctx.control_handler.set_callback("print_terminal",print_terminal)
     ctx.control_handler.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.control_handler.set_callback("not_dev",ctx.not_dev)
+    ctx.control_handler.set_callback("open_setting_window",open_setting_window)
     ctx.control_handler.set_callback("get_raw_chart_range",get_raw_chart_range)
     ctx.control_handler.set_callback("set_axis_range",set_axis_range)
     ctx.control_handler.set_callback("range_slicing",range_slicing)
@@ -77,5 +78,7 @@ def total_callback(ctx):
     ctx.Bridge.set_callback("get_filetype",get_filetype)
     ctx.Bridge.set_callback("Show_modeling_chart",Show_modeling_chart)
     ctx.Bridge.set_callback("show_peaks",show_peaks)
+    ctx.setting_handler.set_callback("print_terminal",print_terminal)
+    ctx.setting_handler.set_callback("print_terminal_colored",print_terminal_colored)
     
     

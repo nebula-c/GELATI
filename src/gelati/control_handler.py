@@ -272,7 +272,7 @@ class control_handler:
         ### Specific button
         ### ----------------------
         button_modeling_specific = QtWidgets.QPushButton("Specific")
-        button_modeling_specific.clicked.connect(lambda: self.not_dev())
+        button_modeling_specific.clicked.connect(lambda: self.open_setting_window())
         button_modeling_specific.setStyleSheet("""
             QPushButton {
                 background-color: #aaaaaa;

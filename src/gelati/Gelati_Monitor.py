@@ -10,6 +10,7 @@ from gelati import modelingchart_handler
 from gelati import terminal_handler
 from gelati import control_handler
 from gelati import total_callback
+from gelati import setting_handler
 
 
 class Gelati_Monitor(QtWidgets.QMainWindow):
@@ -24,7 +25,6 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
     sliced_min_time = None
     sliced_max_time = None
     chart_raw = None
-    
 
     def __init__(self,):
         super().__init__()
@@ -33,6 +33,7 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.rawchart_handler = rawchart_handler.rawchart_handler()
         self.control_handler = control_handler.control_handler()
         self.modelingchart_handler = modelingchart_handler.modelingchart_handler()
+        self.setting_handler = setting_handler.setting_handler()
         
         self.Basic_Framing()
         self.Bridge = core_bridge.Bridge()
@@ -120,8 +121,6 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         self.terminal_handler.print_terminal("You can find the full code here. https://github.com/nebula-c/GELATI (suchoi9709@gmail.com, Sungwoon Choi)")
         self.terminal_handler.print_terminal("")
         self.terminal_output.setFixedHeight(100)
-
-
 
     def show_message(self, mytext):
         msg = QtWidgets.QMessageBox()
