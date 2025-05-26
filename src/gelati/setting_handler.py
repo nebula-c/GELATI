@@ -218,7 +218,29 @@ class setting_handler:
         button_modeling_run.setFixedSize(80, self.setting_comp_height)
         layout_modeling_setting_1.addWidget(button_modeling_run)        
 
-
+        ### ----------------------
+        ### Select button
+        ### ----------------------
+        button_modeling_select = QtWidgets.QPushButton("Select")
+        button_modeling_select.clicked.connect(lambda: self.not_dev())
+        button_modeling_select.setStyleSheet("""
+            QPushButton {
+                background-color: #aaaaaa;
+                color: white;
+                font-size: 14px;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 6px;xw
+            }
+            QPushButton:hover {
+                background-color: #888888;
+            }
+            QPushButton:pressed {
+                background-color: #666666;
+            }
+        """)
+        button_modeling_select.setFixedSize(80, self.setting_comp_height)
+        layout_modeling_setting_1.addWidget(button_modeling_select)     
 
 
         ### ----------------------
@@ -243,7 +265,7 @@ class setting_handler:
             }
         """)
         button_modeling_phase.setFixedSize(80, self.setting_comp_height)
-        layout_modeling_setting_1.addWidget(button_modeling_phase)        
+        layout_modeling_setting_2.addWidget(button_modeling_phase)        
 
 
 
@@ -269,31 +291,7 @@ class setting_handler:
             }
         """)
         button_modeling_specific.setFixedSize(80, self.setting_comp_height)
-        layout_modeling_setting_2.addWidget(button_modeling_specific)        
-
-        ### ----------------------
-        ### Reset button
-        ### ----------------------
-        button_modeling_reset = QtWidgets.QPushButton("Reset")
-        button_modeling_reset.clicked.connect(lambda: self.reset_modeling_chart())
-        button_modeling_reset.setStyleSheet("""
-            QPushButton {
-                background-color: #aaaaaa;
-                color: white;
-                font-size: 14px;
-                padding: 8px 16px;
-                border: none;
-                border-radius: 6px;xw
-            }
-            QPushButton:hover {
-                background-color: #888888;
-            }
-            QPushButton:pressed {
-                background-color: #666666;
-            }
-        """)
-        button_modeling_reset.setFixedSize(80, self.setting_comp_height)
-        layout_modeling_setting_2.addWidget(button_modeling_reset)        
+        layout_modeling_setting_2.addWidget(button_modeling_specific)           
 
 
         ### ----------------------
