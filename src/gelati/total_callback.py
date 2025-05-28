@@ -71,6 +71,7 @@ def total_callback(ctx):
     ctx.control_handler.set_callback("reset_raw_chart",reset_raw_chart)
     ctx.control_handler.set_callback("Show_raw_chart",Show_raw_chart)
     ctx.control_handler.set_callback("set_bridge_raw_data",set_bridge_raw_data)
+    ctx.control_handler.set_callback("get_guide_data",get_guide_data)
     ctx.Bridge.set_callback("print_terminal",print_terminal)
     ctx.Bridge.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)

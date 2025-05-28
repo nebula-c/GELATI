@@ -369,13 +369,16 @@ class control_handler:
     def file_export(self,):
         file_path, _ = QtWidgets.QFileDialog.getSaveFileName(None, "Save File", "", "Text Files (*.txt);;All Files (*)")
 
+        
+
         try:
             if file_path:
-                with open(file_path, 'w') as f:
-                    for iter in range(len(self.list_guide_time)):
-                        temp_time = self.list_guide_time[iter]
-                        temp_amp = self.list_guide_amp[iter]
+                list_guide_time, list_guide_amp = self.get_guide_data()
 
+                with open(file_path, 'w') as f:
+                    for iter in range(len(list_guide_time)):
+                        temp_time = list_guide_time[iter]
+                        temp_amp = list_guide_amp[iter]
                         f.write("{}, {}\n".format(temp_time, temp_amp))
             self.print_terminal("File({}) is saved".format(file_path))
 
