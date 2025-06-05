@@ -90,7 +90,7 @@ class rawchart_handler:
             self.print_terminal("Successed to load data from the file")
 
         except:
-            self.print_terminal("Failed to show data from the file")
+            self.print_terminal_colored("Failed to show data from the file")
 
 
     def get_raw_chart_range(self):

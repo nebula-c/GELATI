@@ -380,7 +380,7 @@ class control_handler:
                         temp_time = list_guide_time[iter]
                         temp_amp = list_guide_amp[iter]
                         f.write("{}, {}\n".format(temp_time, temp_amp))
-            self.print_terminal("File({}) is saved".format(file_path))
+                    self.print_terminal("File({}) is saved".format(file_path))
 
         except:
             self.print_terminal_colored("Failed to export as file")

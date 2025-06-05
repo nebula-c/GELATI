@@ -65,6 +65,10 @@ class Bridge:
             self.setting_for_simrt()
         else:
             self.print_terminal_colored("Please check the type of file.")
+        
+        if self.list_sliced_time is None and self.list_sliced_amp is None and self.list_raw_time is None and self.list_raw_amp is None:
+            self.print_terminal_colored("Please load raw file first")
+            return
 
         GM = self.GM
 
