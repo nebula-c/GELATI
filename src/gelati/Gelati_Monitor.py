@@ -64,19 +64,23 @@ class Gelati_Monitor(QtWidgets.QMainWindow):
         layout_logo.setSpacing(0)
         widget_logo = logo_handler.widget_logo()
         layout_logo.addWidget(widget_logo)
-        layout_top.addLayout(layout_logo)
+        layout_top.addLayout(layout_logo,stretch=2)
 
         ### ---------------------------------------------
         ### Button to load file
         ### ---------------------------------------------
         layout_file_load = self.fileloader_handler.layout_file_load()
-        layout_top.addLayout(layout_file_load)
+        layout_top.addLayout(layout_file_load,stretch=2)
 
         ### ---------------------------------------------
         ### Combo box to choose file type
         ### ---------------------------------------------
+        layout_filetype = QtWidgets.QHBoxLayout()
+        label_filetype = QtWidgets.QLabel("File type : ")
+        layout_filetype.addWidget(label_filetype,stretch=1)
         combomox_filetype = self.fileloader_handler.combomox_filetype()
-        layout_file_load.addWidget(combomox_filetype)
+        layout_filetype.addWidget(combomox_filetype,stretch=3)
+        layout_file_load.addLayout(layout_filetype,stretch=1)
         layout_top.setContentsMargins(0, 0, 0, 0)  
         self.layout.addLayout(layout_top)
 
