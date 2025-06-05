@@ -31,6 +31,7 @@ def total_callback(ctx):
     seeking_peak                = ctx.Bridge.seeking_peak
     get_raw_peaks               = ctx.Bridge.get_raw_peaks
     get_selected_data           = ctx.Bridge.get_selected_data
+    get_parameter               = ctx.Bridge.get_parameter
     open_setting_window         = ctx.setting_handler.open_setting_window
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
@@ -81,4 +82,6 @@ def total_callback(ctx):
     ctx.setting_handler.set_callback("print_terminal",print_terminal)
     ctx.setting_handler.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.setting_handler.set_callback("not_dev",ctx.not_dev)
+    ctx.setting_handler.set_callback("get_parameter",get_parameter)
+    
     

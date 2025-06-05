@@ -187,3 +187,6 @@ class Bridge:
     
     def get_raw_xyrange(self):
         return min(self.list_raw_time),max(self.list_raw_time),min(self.list_raw_amp),max(self.list_raw_amp)
+
+    def get_parameter(self,):
+        return self.interpolation_step, self.time_for_1breath, self.datarate

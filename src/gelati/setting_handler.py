@@ -33,18 +33,23 @@ class setting_handler:
         layout_setting_main.addLayout(layout_labels)
         layout_setting_main.addLayout(layout_lineedits)
 
+        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate = self.get_parameter()
+
         layout_labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
         layout_lineedit_interpolation_step = QtWidgets.QLineEdit()
+        layout_lineedit_interpolation_step.setText(str(self.my_interpolation_step))
         layout_labels.addWidget(layout_labels_interpolation_step)
         layout_lineedits.addWidget(layout_lineedit_interpolation_step)
 
         layout_labels_expected_time_1breath = QtWidgets.QLabel("Expected time for 1 breath (sec)")
         layout_lineedit_expected_time_1breath = QtWidgets.QLineEdit()
+        layout_lineedit_expected_time_1breath.setText(str(self.my_time_for_1breath))
         layout_labels.addWidget(layout_labels_expected_time_1breath)
         layout_lineedits.addWidget(layout_lineedit_expected_time_1breath)
 
         layout_labels_datarate = QtWidgets.QLabel("Datarate(# of data for 1min)")
         layout_lineedit_datarate = QtWidgets.QLineEdit()
+        layout_lineedit_datarate.setText(str(self.my_datarate))
         layout_labels.addWidget(layout_labels_datarate)
         layout_lineedits.addWidget(layout_lineedit_datarate)
         
