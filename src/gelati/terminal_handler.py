@@ -35,6 +35,6 @@ class terminal_handler():
         cursor.insertText("\n" + text)
         self.terminal_output.setTextCursor(cursor)
         self.terminal_output.ensureCursorVisible()
-        fmt.setForeground(QColor("black"))
+        fmt.setForeground(QColor("white"))
         cursor.setCharFormat(fmt)
         self.terminal_output.setTextCursor(cursor)

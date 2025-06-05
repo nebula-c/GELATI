@@ -190,3 +190,8 @@ class Bridge:
 
     def get_parameter(self,):
         return self.interpolation_step, self.time_for_1breath, self.datarate
+    
+    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate):
+        self.interpolation_step = int(my_interpolation_step)
+        self.time_for_1breath = float(my_time_for_1breath)
+        self.datarate = float(my_datarate)

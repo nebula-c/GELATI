@@ -20,6 +20,8 @@ class setting_handler:
         setattr(self, name, func)
 
     def open_setting_window(self):
+        self.Window_Setting = Window_Setting()
+        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate = self.get_parameter()
         self.Window_Setting.set_widget(self.widget_total_setting())
         self.Window_Setting.show()
     
@@ -33,25 +35,23 @@ class setting_handler:
         layout_setting_main.addLayout(layout_labels)
         layout_setting_main.addLayout(layout_lineedits)
 
-        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate = self.get_parameter()
+        labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
+        self.lineedit_interpolation_step = QtWidgets.QLineEdit()
+        self.lineedit_interpolation_step.setText(str(self.my_interpolation_step))
+        layout_labels.addWidget(labels_interpolation_step)
+        layout_lineedits.addWidget(self.lineedit_interpolation_step)
 
-        layout_labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
-        layout_lineedit_interpolation_step = QtWidgets.QLineEdit()
-        layout_lineedit_interpolation_step.setText(str(self.my_interpolation_step))
-        layout_labels.addWidget(layout_labels_interpolation_step)
-        layout_lineedits.addWidget(layout_lineedit_interpolation_step)
+        labels_expected_time_1breath = QtWidgets.QLabel("Expected time for 1 breath (sec)")
+        self.lineedit_expected_time_1breath = QtWidgets.QLineEdit()
+        self.lineedit_expected_time_1breath.setText(str(self.my_time_for_1breath))
+        layout_labels.addWidget(labels_expected_time_1breath)
+        layout_lineedits.addWidget(self.lineedit_expected_time_1breath)
 
-        layout_labels_expected_time_1breath = QtWidgets.QLabel("Expected time for 1 breath (sec)")
-        layout_lineedit_expected_time_1breath = QtWidgets.QLineEdit()
-        layout_lineedit_expected_time_1breath.setText(str(self.my_time_for_1breath))
-        layout_labels.addWidget(layout_labels_expected_time_1breath)
-        layout_lineedits.addWidget(layout_lineedit_expected_time_1breath)
-
-        layout_labels_datarate = QtWidgets.QLabel("Datarate(# of data for 1min)")
-        layout_lineedit_datarate = QtWidgets.QLineEdit()
-        layout_lineedit_datarate.setText(str(self.my_datarate))
-        layout_labels.addWidget(layout_labels_datarate)
-        layout_lineedits.addWidget(layout_lineedit_datarate)
+        labels_datarate = QtWidgets.QLabel("Datarate(# of data for 1min)")
+        self.lineedit_datarate = QtWidgets.QLineEdit()
+        self.lineedit_datarate.setText(str(self.my_datarate))
+        layout_labels.addWidget(labels_datarate)
+        layout_lineedits.addWidget(self.lineedit_datarate)
         
         layout_settings.addLayout(layout_setting_main)
 
@@ -123,8 +123,22 @@ class setting_handler:
         return button_range_cancel
 
     def func_save(self):
-        self.print_terminal("Setting is changed")
+        self.print_terminal("test1")
+        self.print_terminal_colored("test2")
+        self.print_terminal("test3")
+        self.print_terminal_colored("test4")
+        my_interpolation_step = self.lineedit_interpolation_step.text()
+        my_time_for_1breath = self.lineedit_expected_time_1breath.text()
+        my_datarate = self.lineedit_datarate.text()
+        try:
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate)
+        except:
+            self.print_terminal_colored("Please check values...")
+            return
+
         self.not_dev()
+        self.print_terminal("Setting is changed")
+        self.print_terminal("Please reset...")
         self.Window_Setting.close()
     
     def func_cancel(self):
