@@ -53,7 +53,7 @@ class Bridge:
         except:
             self.print_terminal_colored("Modeling is not working")    
             
-    def seeking_peak(self,):
+    def set_dafault_setting(self,):
         self.filetype = self.get_filetype()
         if self.filetype=="Abches":
             self.setting_for_abches()
@@ -66,6 +66,8 @@ class Bridge:
         else:
             self.print_terminal_colored("Please check the type of file.")
         
+
+    def seeking_peak(self,):
         if self.list_sliced_time is None and self.list_sliced_amp is None and self.list_raw_time is None and self.list_raw_amp is None:
             self.print_terminal_colored("Please load raw file first")
             return
@@ -199,3 +201,4 @@ class Bridge:
         self.interpolation_step = int(my_interpolation_step)
         self.time_for_1breath = float(my_time_for_1breath)
         self.datarate = float(my_datarate)
+        self.index_range = self.datarate * self.time_for_1breath

@@ -13,6 +13,8 @@ def total_callback(ctx):
     show_peaks                  = ctx.rawchart_handler.show_peaks
     show_sel                    = ctx.rawchart_handler.show_sel
     reset_raw_chart             = ctx.rawchart_handler.reset_raw_chart
+    remove_peaks                = ctx.rawchart_handler.remove_peaks
+    remove_sel                  = ctx.rawchart_handler.remove_sel
     set_modeling_yaix_range_new = ctx.modelingchart_handler.set_modeling_yaix_range_new
     set_modeling_yaix_range_raw = ctx.modelingchart_handler.set_modeling_yaix_range_raw
     Show_modeling_chart         = ctx.modelingchart_handler.Show_modeling_chart
@@ -33,6 +35,7 @@ def total_callback(ctx):
     get_selected_data           = ctx.Bridge.get_selected_data
     get_parameter               = ctx.Bridge.get_parameter
     set_parameter               = ctx.Bridge.set_parameter
+    set_dafault_setting         = ctx.Bridge.set_dafault_setting
     open_setting_window         = ctx.setting_handler.open_setting_window
 
     ctx.fileloader_handler.set_callback("print_terminal",print_terminal)
@@ -41,6 +44,7 @@ def total_callback(ctx):
     ctx.fileloader_handler.set_callback("Show_raw_chart",Show_raw_chart)
     ctx.fileloader_handler.set_callback("set_bridge_raw_data",set_bridge_raw_data)
     ctx.fileloader_handler.set_callback("set_rawchart_raw_data",set_rawchart_raw_data)
+    ctx.fileloader_handler.set_callback("set_dafault_setting",set_dafault_setting)
     ctx.rawchart_handler.set_callback("print_terminal",print_terminal)
     ctx.rawchart_handler.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.rawchart_handler.set_callback("get_filename",get_filename)
@@ -74,6 +78,8 @@ def total_callback(ctx):
     ctx.control_handler.set_callback("Show_raw_chart",Show_raw_chart)
     ctx.control_handler.set_callback("set_bridge_raw_data",set_bridge_raw_data)
     ctx.control_handler.set_callback("get_guide_data",get_guide_data)
+    ctx.control_handler.set_callback("remove_peaks",remove_peaks)
+    ctx.control_handler.set_callback("remove_sel",remove_sel)
     ctx.Bridge.set_callback("print_terminal",print_terminal)
     ctx.Bridge.set_callback("print_terminal_colored",print_terminal_colored)
     ctx.Bridge.set_callback("get_raw_data_from_file",get_raw_data_from_file)
@@ -85,5 +91,5 @@ def total_callback(ctx):
     ctx.setting_handler.set_callback("not_dev",ctx.not_dev)
     ctx.setting_handler.set_callback("get_parameter",get_parameter)
     ctx.setting_handler.set_callback("set_parameter",set_parameter)
-    
+    ctx.setting_handler.set_callback("reset_modeling_chart",reset_modeling_chart)
     

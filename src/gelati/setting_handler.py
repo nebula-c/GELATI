@@ -123,10 +123,6 @@ class setting_handler:
         return button_range_cancel
 
     def func_save(self):
-        self.print_terminal("test1")
-        self.print_terminal_colored("test2")
-        self.print_terminal("test3")
-        self.print_terminal_colored("test4")
         my_interpolation_step = self.lineedit_interpolation_step.text()
         my_time_for_1breath = self.lineedit_expected_time_1breath.text()
         my_datarate = self.lineedit_datarate.text()
@@ -136,9 +132,9 @@ class setting_handler:
             self.print_terminal_colored("Please check values...")
             return
 
-        self.not_dev()
+        self.reset_modeling_chart()
         self.print_terminal("Setting is changed")
-        self.print_terminal("Please reset...")
+        self.print_terminal("Modeing chart is reseted")
         self.Window_Setting.close()
     
     def func_cancel(self):

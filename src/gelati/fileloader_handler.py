@@ -51,7 +51,6 @@ class fileloader_handler:
         """)
         combomox_filetype.currentTextChanged.connect(lambda text: setattr(self,'filetype', text))
         self.filetype =  combomox_filetype.itemText(0)
-        # layout_file_load.addWidget(combomox_filetype)
         return combomox_filetype
 
     def open_file_dialog(self,):
@@ -70,6 +69,7 @@ class fileloader_handler:
                 self.print_terminal_colored("Undefined file type", color='#ff0000')
                 return
             
+            self.set_dafault_setting()
             if self.list_raw_time is not None and self.list_raw_amp is not None:
                 self.print_terminal("File {} is opened".format(file_path))
             else:

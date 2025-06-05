@@ -18,6 +18,8 @@ class rawchart_handler:
     sliced_max_time = None
     min_raw_val = None
     max_raw_val = None
+    series_peaks = None
+    list_sel_series = []
     
 
     def __init__(self):
@@ -110,13 +112,13 @@ class rawchart_handler:
 
     def show_peaks(self,):
         self.list_raw_time_peak, self.list_raw_amp_peak = self.get_raw_peaks()
-        series_peaks = QScatterSeries()
+        self.series_peaks = QScatterSeries()
         for x, y in zip(self.list_raw_time_peak, self.list_raw_amp_peak):
-            series_peaks.append(QPointF(float(x), float(y)))
-        self.chart_raw.addSeries(series_peaks)
-        series_peaks.setMarkerSize(10)
-        series_peaks.attachAxis(self.axis_x_raw)
-        series_peaks.attachAxis(self.axis_y_raw)
+            self.series_peaks.append(QPointF(float(x), float(y)))
+        self.chart_raw.addSeries(self.series_peaks)
+        self.series_peaks.setMarkerSize(10)
+        self.series_peaks.attachAxis(self.axis_x_raw)
+        self.series_peaks.attachAxis(self.axis_y_raw)
 
     def show_sel(self,):
         try:
@@ -124,18 +126,33 @@ class rawchart_handler:
         except:
             self.print_terminal_colored("Failed to load selected data")
 
+        
         for i in range(len(self.list_sel_time)):
             each_list_selected_sliced_time = self.list_sel_time[i]
             each_list_selected_sliced_val = self.list_sel_amp[i]
-            series_each = QLineSeries()
+            series_sel = QLineSeries()
 
             for x, y in zip(each_list_selected_sliced_time, each_list_selected_sliced_val):
-                series_each.append(QPointF(float(x), float(y)))
+                series_sel.append(QPointF(float(x), float(y)))
                 
-            series_each.setColor(QColor("#22AA00"))
-            self.chart_raw.addSeries(series_each)
-            series_each.attachAxis(self.axis_x_raw)
-            series_each.attachAxis(self.axis_y_raw)
+            series_sel.setColor(QColor("#22AA00"))
+            self.chart_raw.addSeries(series_sel)
+            series_sel.attachAxis(self.axis_x_raw)
+            series_sel.attachAxis(self.axis_y_raw)
+            self.list_sel_series.append(series_sel)
         
     def reset_raw_chart(self,):
         self.chart_raw.removeAllSeries()
+        self.list_sel_series = []
+        self.series_peaks = None
+    
+    def remove_peaks(self,):
+        self.remove_sel()
+        if self.series_peaks is not None:
+            self.chart_raw.removeSeries(self.series_peaks)
+            self.series_peaks = None
+
+    def remove_sel(self,):
+        for each in self.list_sel_series:
+            self.chart_raw.removeSeries(each)
+            self.list_sel_series = []

@@ -173,6 +173,7 @@ class control_handler:
         ### Peaks button
         ### ----------------------
         button_modeling_peaks = QtWidgets.QPushButton("Peaks")
+        button_modeling_peaks.clicked.connect(lambda: self.remove_peaks())
         button_modeling_peaks.clicked.connect(lambda: self.seeking_peak())
         button_modeling_peaks.setStyleSheet("""
             QPushButton {
@@ -197,6 +198,7 @@ class control_handler:
         ### Select button
         ### ----------------------
         button_modeling_select = QtWidgets.QPushButton("Select")
+        button_modeling_select.clicked.connect(lambda: self.remove_sel())
         button_modeling_select.clicked.connect(lambda: self.show_sel())
         button_modeling_select.setStyleSheet("""
             QPushButton {
@@ -342,6 +344,7 @@ class control_handler:
         self.reset_raw_chart()
         self.Show_raw_chart()
         self.set_bridge_raw_data()
+        self.reset_slicing()
         self.print_terminal("Chart is reseted")
 
     def raw_chart_range_submit(self,):
@@ -389,10 +392,15 @@ class control_handler:
 
     def set_lineedit_raw_range(self):
         xmin,xmax,ymin,ymax = self.get_raw_chart_range()
-        self.lineedit_xmin.setText(str(xmin))
-        self.lineedit_xmax.setText(str(xmax))
-        self.lineedit_ymin.setText(str(ymin))
-        self.lineedit_ymax.setText(str(ymax))
+        # self.lineedit_xmin.setText(str(xmin))
+        # self.lineedit_xmax.setText(str(xmax))
+        # self.lineedit_ymin.setText(str(ymin))
+        # self.lineedit_ymax.setText(str(ymax))
+
+        self.lineedit_xmin.setText("{:.3f}".format(xmin))
+        self.lineedit_xmax.setText("{:.3f}".format(xmax))
+        self.lineedit_ymax.setText("{:.3f}".format(ymax))
+        self.lineedit_ymin.setText("{:.3f}".format(ymin))
 
     def get_sliced_range(self):
         return self.sliced_min_time, self.sliced_max_time, self.min_raw_val, self.max_raw_val
