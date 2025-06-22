@@ -21,7 +21,7 @@ class setting_handler:
 
     def open_setting_window(self):
         self.Window_Setting = Window_Setting()
-        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate = self.get_parameter()
+        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate, self.sigma_selA, self.sigma_selC= self.get_parameter()
         self.Window_Setting.set_widget(self.widget_total_setting())
         self.Window_Setting.show()
     
@@ -34,6 +34,10 @@ class setting_handler:
         layout_lineedits = QtWidgets.QVBoxLayout()
         layout_setting_main.addLayout(layout_labels)
         layout_setting_main.addLayout(layout_lineedits)
+        layout_labels2 = QtWidgets.QVBoxLayout()
+        layout_lineedits2 = QtWidgets.QVBoxLayout()
+        layout_setting_main.addLayout(layout_labels2)
+        layout_setting_main.addLayout(layout_lineedits2)
 
         labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
         self.lineedit_interpolation_step = QtWidgets.QLineEdit()
@@ -63,6 +67,19 @@ class setting_handler:
         layout_settings.addWidget(line1)
 
 
+        labels_sigma_selectionA = QtWidgets.QLabel("Sigma for the period selection")
+        self.lineedit_sigma_selectionA = QtWidgets.QLineEdit()
+        self.lineedit_sigma_selectionA.setText(str(self.sigma_selA))
+        layout_labels2.addWidget(labels_sigma_selectionA)
+        layout_lineedits2.addWidget(self.lineedit_sigma_selectionA)
+
+        labels_sigma_selectionC = QtWidgets.QLabel("Sigma for the peak heights")
+        self.lineedit_sigma_selectionC = QtWidgets.QLineEdit()
+        self.lineedit_sigma_selectionC.setText(str(self.sigma_selC))
+        layout_labels2.addWidget(labels_sigma_selectionC)
+        layout_lineedits2.addWidget(self.lineedit_sigma_selectionC)
+
+        layout_settings.addLayout(layout_setting_main)
 
 
         layout_bottom_buttons = QtWidgets.QHBoxLayout()
@@ -126,8 +143,13 @@ class setting_handler:
         my_interpolation_step = self.lineedit_interpolation_step.text()
         my_time_for_1breath = self.lineedit_expected_time_1breath.text()
         my_datarate = self.lineedit_datarate.text()
+
+        mysigma_A = self.lineedit_sigma_selectionA.text()
+        mysigma_C = self.lineedit_sigma_selectionC.text()
+
+
         try:
-            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate)
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_C)
         except:
             self.print_terminal_colored("Please check values...")
             return

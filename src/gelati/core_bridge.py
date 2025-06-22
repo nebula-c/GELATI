@@ -1,5 +1,6 @@
 from gelati import core
 import numpy as np
+import copy
 
 class Bridge:
     def __init__(self,):
@@ -19,6 +20,8 @@ class Bridge:
         self.interpolation_step = None
         self.index_range        = None
         self.filetype = None
+        self.sigma_selA         = 2
+        self.sigma_selC         = 2
 
         self.GM = core.guide_modeling()
 
@@ -105,8 +108,31 @@ class Bridge:
             self.print_terminal_colored("Please ckeck peaks by pressing the peaks button")
 
         GM.Slicing_data()
-        GM.Selection_A(sigma=2)
-        GM.Selection_C(sigma=2)
+        # GM.Selection_A(sigma=self.sigma_selA)
+        # GM.Selection_C(sigma=self.sigma_selC)
+        
+        before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
+        before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
+
+        GM.Selection_A(sigma=self.sigma_selA)
+        if len(GM.list_sliced_time) == 0:
+            self.print_terminal_colored("No data after selection A")
+            GM.list_sliced_time = before_list_sliced_time
+            GM.list_sliced_val = before_list_sliced_val
+        else:
+            self.print_terminal("Result of selection A: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
+        
+        before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
+        before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
+
+        GM.Selection_C(sigma=self.sigma_selC)
+        if len(GM.list_sliced_time) == 0:
+            self.print_terminal_colored("No data after selection C")
+            GM.list_sliced_time = before_list_sliced_time
+            GM.list_sliced_val = before_list_sliced_val
+        else:
+            self.print_terminal("Result of selection C: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
+
         
         self.list_sel_time = GM.list_sliced_time
         self.list_sel_amp  = GM.list_sliced_val
@@ -195,10 +221,12 @@ class Bridge:
         return min(self.list_raw_time),max(self.list_raw_time),min(self.list_raw_amp),max(self.list_raw_amp)
 
     def get_parameter(self,):
-        return self.interpolation_step, self.time_for_1breath, self.datarate
+        return self.interpolation_step, self.time_for_1breath, self.datarate, self.sigma_selA, self.sigma_selC
     
-    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate):
+    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate, mysigma_A, mysigma_C):
         self.interpolation_step = int(my_interpolation_step)
         self.time_for_1breath = float(my_time_for_1breath)
         self.datarate = float(my_datarate)
         self.index_range = self.datarate * self.time_for_1breath
+        self.sigma_selA = float(mysigma_A)
+        self.sigma_selC = float(mysigma_C)
