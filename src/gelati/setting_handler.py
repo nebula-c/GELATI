@@ -21,7 +21,7 @@ class setting_handler:
 
     def open_setting_window(self):
         self.Window_Setting = Window_Setting()
-        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate, self.sigma_selA, self.sigma_selC= self.get_parameter()
+        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate, self.sigma_selA, self.sigma_selB, self.sigma_selC= self.get_parameter()
         self.Window_Setting.set_widget(self.widget_total_setting())
         self.Window_Setting.show()
     
@@ -72,6 +72,12 @@ class setting_handler:
         self.lineedit_sigma_selectionA.setText(str(self.sigma_selA))
         layout_labels2.addWidget(labels_sigma_selectionA)
         layout_lineedits2.addWidget(self.lineedit_sigma_selectionA)
+
+        labels_sigma_selectionB = QtWidgets.QLabel("Sigma for the baseline selection")
+        self.lineedit_sigma_selectionB = QtWidgets.QLineEdit()
+        self.lineedit_sigma_selectionB.setText(str(self.sigma_selB))
+        layout_labels2.addWidget(labels_sigma_selectionB)
+        layout_lineedits2.addWidget(self.lineedit_sigma_selectionB)
 
         labels_sigma_selectionC = QtWidgets.QLabel("Sigma for the peak heights")
         self.lineedit_sigma_selectionC = QtWidgets.QLineEdit()
@@ -145,11 +151,12 @@ class setting_handler:
         my_datarate = self.lineedit_datarate.text()
 
         mysigma_A = self.lineedit_sigma_selectionA.text()
+        mysigma_B = self.lineedit_sigma_selectionB.text()
         mysigma_C = self.lineedit_sigma_selectionC.text()
 
 
         try:
-            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_C)
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C)
         except:
             self.print_terminal_colored("Please check values...")
             return
