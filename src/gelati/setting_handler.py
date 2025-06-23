@@ -15,7 +15,7 @@ class Window_Setting(QtWidgets.QWidget):
 class setting_handler:
     def __init__(self,):
         self.Window_Setting = Window_Setting()
-        self.sel_condition = []
+        self.sel_condition = [None,None,None]
     
     def set_callback(self, name, func):
         setattr(self, name, func)
@@ -105,9 +105,9 @@ class setting_handler:
 
         label_sel_first = QtWidgets.QLabel("First selection")
         layout_labels3.addWidget(label_sel_first)
-        combomox_first_sel = QtWidgets.QComboBox()
-        combomox_first_sel.addItems(["Period","Baseline","Peak_height","None"])
-        combomox_first_sel.setStyleSheet("""
+        self.combomox_first_sel = QtWidgets.QComboBox()
+        self.combomox_first_sel.addItems(["Period","Baseline","Peak_height","None"])
+        self.combomox_first_sel.setStyleSheet("""
             QComboBox {
                 background-color: white;
                 color: black;
@@ -115,15 +115,14 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        combomox_first_sel.setCurrentIndex(0)
-        self.sel_condition.append(combomox_first_sel.currentText())
-        layout_lineedits3.addWidget(combomox_first_sel)
+        self.combomox_first_sel.setCurrentIndex(0)
+        layout_lineedits3.addWidget(self.combomox_first_sel)
 
         label_sel_second = QtWidgets.QLabel("Second selection")
         layout_labels3.addWidget(label_sel_second)
-        combomox_second_sel = QtWidgets.QComboBox()
-        combomox_second_sel.addItems(["Period","Baseline","Peak_height","None"])
-        combomox_second_sel.setStyleSheet("""
+        self.combomox_second_sel = QtWidgets.QComboBox()
+        self.combomox_second_sel.addItems(["Period","Baseline","Peak_height","None"])
+        self.combomox_second_sel.setStyleSheet("""
             QComboBox {
                 background-color: white;
                 color: black;
@@ -131,15 +130,15 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        combomox_second_sel.setCurrentIndex(2)
-        self.sel_condition.append(combomox_second_sel.currentText())
-        layout_lineedits3.addWidget(combomox_second_sel)
+        self.combomox_second_sel.setCurrentIndex(2)
+        self.sel_condition[1] = self.combomox_second_sel.currentText()
+        layout_lineedits3.addWidget(self.combomox_second_sel)
 
         label_sel_third = QtWidgets.QLabel("Third selection")
         layout_labels3.addWidget(label_sel_third)
-        combomox_third_sel = QtWidgets.QComboBox()
-        combomox_third_sel.addItems(["Period","Baseline","Peak_height","None"])
-        combomox_third_sel.setStyleSheet("""
+        self.combomox_third_sel = QtWidgets.QComboBox()
+        self.combomox_third_sel.addItems(["Period","Baseline","Peak_height","None"])
+        self.combomox_third_sel.setStyleSheet("""
             QComboBox {
                 background-color: white;
                 color: black;
@@ -147,9 +146,9 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        combomox_third_sel.setCurrentIndex(3)
-        self.sel_condition.append(combomox_third_sel.currentText())
-        layout_lineedits3.addWidget(combomox_third_sel)
+        self.combomox_third_sel.setCurrentIndex(3)
+        self.sel_condition[2] = self.combomox_third_sel.currentText()
+        layout_lineedits3.addWidget(self.combomox_third_sel)
 
         
         
@@ -224,9 +223,13 @@ class setting_handler:
         mysigma_B = self.lineedit_sigma_selectionB.text()
         mysigma_C = self.lineedit_sigma_selectionC.text()
 
+        self.sel_condition[0] = self.combomox_first_sel.currentText()
+        self.sel_condition[1] = self.combomox_second_sel.currentText()
+        self.sel_condition[2] = self.combomox_third_sel.currentText()
 
         try:
-            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C)
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C)            
+            print(self.sel_condition)
         except:
             self.print_terminal_colored("Please check values...")
             return
