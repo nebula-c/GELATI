@@ -15,6 +15,7 @@ class Window_Setting(QtWidgets.QWidget):
 class setting_handler:
     def __init__(self,):
         self.Window_Setting = Window_Setting()
+        self.sel_condition = []
     
     def set_callback(self, name, func):
         setattr(self, name, func)
@@ -34,10 +35,6 @@ class setting_handler:
         layout_lineedits = QtWidgets.QVBoxLayout()
         layout_setting_main.addLayout(layout_labels)
         layout_setting_main.addLayout(layout_lineedits)
-        layout_labels2 = QtWidgets.QVBoxLayout()
-        layout_lineedits2 = QtWidgets.QVBoxLayout()
-        layout_setting_main.addLayout(layout_labels2)
-        layout_setting_main.addLayout(layout_lineedits2)
 
         labels_interpolation_step = QtWidgets.QLabel("Interpolation step")
         self.lineedit_interpolation_step = QtWidgets.QLineEdit()
@@ -56,16 +53,21 @@ class setting_handler:
         self.lineedit_datarate.setText(str(self.my_datarate))
         layout_labels.addWidget(labels_datarate)
         layout_lineedits.addWidget(self.lineedit_datarate)
-        
-        layout_settings.addLayout(layout_setting_main)
 
 
 
         line1 = QtWidgets.QFrame()
-        line1.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        line1.setFrameShape(QtWidgets.QFrame.Shape.VLine)
         line1.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        layout_settings.addWidget(line1)
+        layout_setting_main.addWidget(line1)
 
+
+
+        
+        layout_labels2 = QtWidgets.QVBoxLayout()
+        layout_lineedits2 = QtWidgets.QVBoxLayout()
+        layout_setting_main.addLayout(layout_labels2)
+        layout_setting_main.addLayout(layout_lineedits2)
 
         labels_sigma_selectionA = QtWidgets.QLabel("Sigma for the period selection")
         self.lineedit_sigma_selectionA = QtWidgets.QLineEdit()
@@ -85,6 +87,74 @@ class setting_handler:
         layout_labels2.addWidget(labels_sigma_selectionC)
         layout_lineedits2.addWidget(self.lineedit_sigma_selectionC)
 
+
+        line2 = QtWidgets.QFrame()
+        line2.setFrameShape(QtWidgets.QFrame.Shape.VLine)
+        line2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        layout_setting_main.addWidget(line2)
+
+
+
+
+
+
+        layout_labels3 = QtWidgets.QVBoxLayout()
+        layout_lineedits3 = QtWidgets.QVBoxLayout()
+        layout_setting_main.addLayout(layout_labels3)
+        layout_setting_main.addLayout(layout_lineedits3)
+
+        label_sel_first = QtWidgets.QLabel("First selection")
+        layout_labels3.addWidget(label_sel_first)
+        combomox_first_sel = QtWidgets.QComboBox()
+        combomox_first_sel.addItems(["Period","Baseline","Peak_height","None"])
+        combomox_first_sel.setStyleSheet("""
+            QComboBox {
+                background-color: white;
+                color: black;
+                border: 1px solid gray;
+                padding: 5px;
+            }
+        """)
+        combomox_first_sel.setCurrentIndex(0)
+        self.sel_condition.append(combomox_first_sel.currentText())
+        layout_lineedits3.addWidget(combomox_first_sel)
+
+        label_sel_second = QtWidgets.QLabel("Second selection")
+        layout_labels3.addWidget(label_sel_second)
+        combomox_second_sel = QtWidgets.QComboBox()
+        combomox_second_sel.addItems(["Period","Baseline","Peak_height","None"])
+        combomox_second_sel.setStyleSheet("""
+            QComboBox {
+                background-color: white;
+                color: black;
+                border: 1px solid gray;
+                padding: 5px;
+            }
+        """)
+        combomox_second_sel.setCurrentIndex(2)
+        self.sel_condition.append(combomox_second_sel.currentText())
+        layout_lineedits3.addWidget(combomox_second_sel)
+
+        label_sel_third = QtWidgets.QLabel("Third selection")
+        layout_labels3.addWidget(label_sel_third)
+        combomox_third_sel = QtWidgets.QComboBox()
+        combomox_third_sel.addItems(["Period","Baseline","Peak_height","None"])
+        combomox_third_sel.setStyleSheet("""
+            QComboBox {
+                background-color: white;
+                color: black;
+                border: 1px solid gray;
+                padding: 5px;
+            }
+        """)
+        combomox_third_sel.setCurrentIndex(3)
+        self.sel_condition.append(combomox_third_sel.currentText())
+        layout_lineedits3.addWidget(combomox_third_sel)
+
+        
+        
+        
+        
         layout_settings.addLayout(layout_setting_main)
 
 
