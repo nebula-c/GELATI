@@ -23,6 +23,8 @@ class Bridge:
         self.sigma_selA         = 2
         self.sigma_selB         = 5
         self.sigma_selC         = 2
+        self.selec_order        = ["Period","Peak_height",None]
+        
 
         self.GM = core.guide_modeling()
 
@@ -112,27 +114,38 @@ class Bridge:
         # GM.Selection_A(sigma=self.sigma_selA)
         # GM.Selection_C(sigma=self.sigma_selC)
         
-        before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
-        before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
+        # before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
+        # before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
 
-        GM.Selection_A(sigma=self.sigma_selA)
-        if len(GM.list_sliced_time) == 0:
-            self.print_terminal_colored("No data after selection A")
-            GM.list_sliced_time = before_list_sliced_time
-            GM.list_sliced_val = before_list_sliced_val
-        else:
-            self.print_terminal("Result of selection A: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
+        # GM.Selection_A(sigma=self.sigma_selA)
+        # if len(GM.list_sliced_time) == 0:
+        #     self.print_terminal_colored("No data after selection A")
+        #     GM.list_sliced_time = before_list_sliced_time
+        #     GM.list_sliced_val = before_list_sliced_val
+        # else:
+        #     self.print_terminal("Result of selection A: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
         
-        before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
-        before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
+        # before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
+        # before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
 
-        GM.Selection_C(sigma=self.sigma_selC)
-        if len(GM.list_sliced_time) == 0:
-            self.print_terminal_colored("No data after selection C")
-            GM.list_sliced_time = before_list_sliced_time
-            GM.list_sliced_val = before_list_sliced_val
-        else:
-            self.print_terminal("Result of selection C: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
+        # GM.Selection_C(sigma=self.sigma_selC)
+        # if len(GM.list_sliced_time) == 0:
+        #     self.print_terminal_colored("No data after selection C")
+        #     GM.list_sliced_time = before_list_sliced_time
+        #     GM.list_sliced_val = before_list_sliced_val
+        # else:
+        #     self.print_terminal("Result of selection C: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
+
+
+        for each_order in self.selec_order:
+            if each_order == "Period":
+                self.Run_selection_A()
+            if each_order == "Baseline":
+                self.Run_selection_B()
+            if each_order == "Peak_height":
+                self.Run_selection_C()
+            if each_order == "None":
+                continue
 
         
         self.list_sel_time = GM.list_sliced_time
@@ -265,7 +278,7 @@ class Bridge:
     def get_parameter(self,):
         return self.interpolation_step, self.time_for_1breath, self.datarate, self.sigma_selA, self.sigma_selB, self.sigma_selC
     
-    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate, mysigma_A, mysigma_B, mysigma_C):
+    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate, mysigma_A, mysigma_B, mysigma_C, mysel_order):
         self.interpolation_step = int(my_interpolation_step)
         self.time_for_1breath = float(my_time_for_1breath)
         self.datarate = float(my_datarate)
@@ -273,3 +286,4 @@ class Bridge:
         self.sigma_selA = float(mysigma_A)
         self.sigma_selB = float(mysigma_B)
         self.sigma_selC = float(mysigma_C)
+        self.selec_order = mysel_order

@@ -228,8 +228,7 @@ class setting_handler:
         self.sel_condition[2] = self.combomox_third_sel.currentText()
 
         try:
-            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C)            
-            print(self.sel_condition)
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C,self.sel_condition)
         except:
             self.print_terminal_colored("Please check values...")
             return
