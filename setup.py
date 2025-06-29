@@ -11,7 +11,7 @@ setup(
         'gelati': ['images/*'],
     },
     install_requires=[
-        'PyQt6'
+        'setuptools','PyQt6','PyQt6-Charts','numpy','pandas','scipy'
     ],
     entry_points={
         'console_scripts': [
