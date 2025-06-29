@@ -3,17 +3,21 @@ Guide-signal Extraction Logic &amp; Auto Transform Interface
 
 
 # Installation
-### For Windows
+### For general
 ```
 git clone https://github.com/nebula-c/GELATI
 cd ./GELATI
+pip3 install .
+gelati      ### everywhere, to execute
+```
+
+### To build executable file for Windows
+```
 window_build.bat
 ```
 
-### For Mac
+### To build executable file for Mac
 ```
-git clone https://github.com/nebula-c/GELATI
-cd ./GELATI
 ./mac_build.sh
 ```
 
