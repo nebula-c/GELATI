@@ -6,14 +6,14 @@ Guide-signal Extraction Logic &amp; Auto Transform Interface
 ### For Windows
 ```
 git clone https://github.com/nebula-c/GELATI
-cd ./gelati
+cd ./GELATI
 window_build.bat
 ```
 
 ### For Mac
 ```
 git clone https://github.com/nebula-c/GELATI
-cd ./gelati
+cd ./GELATI
 ./mac_build.sh
 ```
 
