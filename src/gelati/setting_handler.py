@@ -15,14 +15,15 @@ class Window_Setting(QtWidgets.QWidget):
 class setting_handler:
     def __init__(self,):
         self.Window_Setting = Window_Setting()
-        self.sel_condition = [None,None,None]
+        self.order_sigma = [100,100,100]
+        self.selec_order = ["None","None","None"]
     
     def set_callback(self, name, func):
         setattr(self, name, func)
 
     def open_setting_window(self):
         self.Window_Setting = Window_Setting()
-        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate, self.sigma_selA, self.sigma_selB, self.sigma_selC= self.get_parameter()
+        self.my_interpolation_step, self.my_time_for_1breath, self.my_datarate, self.order_sigma, self.selec_order = self.get_parameter()
         self.Window_Setting.set_widget(self.widget_total_setting())
         self.Window_Setting.show()
     
@@ -69,23 +70,23 @@ class setting_handler:
         layout_setting_main.addLayout(layout_labels2)
         layout_setting_main.addLayout(layout_lineedits2)
 
-        labels_sigma_selectionA = QtWidgets.QLabel("Sigma for the period selection")
-        self.lineedit_sigma_selectionA = QtWidgets.QLineEdit()
-        self.lineedit_sigma_selectionA.setText(str(self.sigma_selA))
-        layout_labels2.addWidget(labels_sigma_selectionA)
-        layout_lineedits2.addWidget(self.lineedit_sigma_selectionA)
+        labels_sigma_first_selection = QtWidgets.QLabel("Sigma for first selection")
+        self.lineedit_sigma_first_selection = QtWidgets.QLineEdit()
+        self.lineedit_sigma_first_selection.setText(str(self.order_sigma[0]))
+        layout_labels2.addWidget(labels_sigma_first_selection)
+        layout_lineedits2.addWidget(self.lineedit_sigma_first_selection)
 
-        labels_sigma_selectionB = QtWidgets.QLabel("Sigma for the baseline selection")
-        self.lineedit_sigma_selectionB = QtWidgets.QLineEdit()
-        self.lineedit_sigma_selectionB.setText(str(self.sigma_selB))
-        layout_labels2.addWidget(labels_sigma_selectionB)
-        layout_lineedits2.addWidget(self.lineedit_sigma_selectionB)
+        labels_sigma_second_selection = QtWidgets.QLabel("Sigma for second selection")
+        self.lineedit_sigma_second_selection = QtWidgets.QLineEdit()
+        self.lineedit_sigma_second_selection.setText(str(self.order_sigma[1]))
+        layout_labels2.addWidget(labels_sigma_second_selection)
+        layout_lineedits2.addWidget(self.lineedit_sigma_second_selection)
 
-        labels_sigma_selectionC = QtWidgets.QLabel("Sigma for the peak heights")
-        self.lineedit_sigma_selectionC = QtWidgets.QLineEdit()
-        self.lineedit_sigma_selectionC.setText(str(self.sigma_selC))
-        layout_labels2.addWidget(labels_sigma_selectionC)
-        layout_lineedits2.addWidget(self.lineedit_sigma_selectionC)
+        labels_sigma_third_selection = QtWidgets.QLabel("Sigma for third heights")
+        self.lineedit_sigma_third_selection = QtWidgets.QLineEdit()
+        self.lineedit_sigma_third_selection.setText(str(self.order_sigma[2]))
+        layout_labels2.addWidget(labels_sigma_third_selection)
+        layout_lineedits2.addWidget(self.lineedit_sigma_third_selection)
 
 
         line2 = QtWidgets.QFrame()
@@ -115,7 +116,8 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        self.combomox_first_sel.setCurrentIndex(0)
+        myindex = self.combomox_first_sel.findText(self.selec_order[0])
+        self.combomox_first_sel.setCurrentIndex(myindex)
         layout_lineedits3.addWidget(self.combomox_first_sel)
 
         label_sel_second = QtWidgets.QLabel("Second selection")
@@ -130,8 +132,9 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        self.combomox_second_sel.setCurrentIndex(2)
-        self.sel_condition[1] = self.combomox_second_sel.currentText()
+        myindex = self.combomox_second_sel.findText(self.selec_order[1])
+        self.combomox_second_sel.setCurrentIndex(myindex)
+        self.selec_order[1] = self.combomox_second_sel.currentText()
         layout_lineedits3.addWidget(self.combomox_second_sel)
 
         label_sel_third = QtWidgets.QLabel("Third selection")
@@ -146,8 +149,9 @@ class setting_handler:
                 padding: 5px;
             }
         """)
-        self.combomox_third_sel.setCurrentIndex(3)
-        self.sel_condition[2] = self.combomox_third_sel.currentText()
+        myindex = self.combomox_third_sel.findText(self.selec_order[2])
+        self.combomox_third_sel.setCurrentIndex(myindex)
+        self.selec_order[2] = self.combomox_third_sel.currentText()
         layout_lineedits3.addWidget(self.combomox_third_sel)
 
         
@@ -219,16 +223,16 @@ class setting_handler:
         my_time_for_1breath = self.lineedit_expected_time_1breath.text()
         my_datarate = self.lineedit_datarate.text()
 
-        mysigma_A = self.lineedit_sigma_selectionA.text()
-        mysigma_B = self.lineedit_sigma_selectionB.text()
-        mysigma_C = self.lineedit_sigma_selectionC.text()
-
-        self.sel_condition[0] = self.combomox_first_sel.currentText()
-        self.sel_condition[1] = self.combomox_second_sel.currentText()
-        self.sel_condition[2] = self.combomox_third_sel.currentText()
-
         try:
-            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,mysigma_A,mysigma_B,mysigma_C,self.sel_condition)
+            self.order_sigma[0] = float(self.lineedit_sigma_first_selection.text())
+            self.order_sigma[1] = float(self.lineedit_sigma_second_selection.text())
+            self.order_sigma[2] = float(self.lineedit_sigma_third_selection.text())
+
+            self.selec_order[0] = self.combomox_first_sel.currentText()
+            self.selec_order[1] = self.combomox_second_sel.currentText()
+            self.selec_order[2] = self.combomox_third_sel.currentText()
+
+            self.set_parameter(my_interpolation_step,my_time_for_1breath,my_datarate,self.order_sigma,self.selec_order)
         except:
             self.print_terminal_colored("Please check values...")
             return

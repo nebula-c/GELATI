@@ -20,10 +20,8 @@ class Bridge:
         self.interpolation_step = None
         self.index_range        = None
         self.filetype = None
-        self.sigma_selA         = 2
-        self.sigma_selB         = 5
-        self.sigma_selC         = 2
-        self.selec_order        = ["Period","Peak_height",None]
+        self.order_sigma        = [2,2,0]
+        self.selec_order        = ["Period","Peak_height","None"]
         
 
         self.GM = core.guide_modeling()
@@ -136,16 +134,18 @@ class Bridge:
         # else:
         #     self.print_terminal("Result of selection C: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
 
-
+        print(self.order_sigma)
+        i_order = 0
         for each_order in self.selec_order:
             if each_order == "Period":
-                self.Run_selection_A()
+                self.Run_selection_A(self.order_sigma[i_order])
             if each_order == "Baseline":
-                self.Run_selection_B()
+                self.Run_selection_B(self.order_sigma[i_order])
             if each_order == "Peak_height":
-                self.Run_selection_C()
-            if each_order == "None":
-                continue
+                self.Run_selection_C(self.order_sigma[i_order])
+            # if each_order == "None":
+                # continue
+            i_order+=1
 
         
         self.list_sel_time = GM.list_sliced_time
@@ -153,12 +153,12 @@ class Bridge:
 
         return GM.list_sliced_time, GM.list_sliced_val
 
-    def Run_selection_A(self):
+    def Run_selection_A(self,mysigma):
         GM = self.GM
         before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
         before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
 
-        GM.Selection_A(sigma=self.sigma_selA)
+        GM.Selection_A(sigma=mysigma)
         if len(GM.list_sliced_time) == 0:
             self.print_terminal_colored("No data after selection A")
             GM.list_sliced_time = before_list_sliced_time
@@ -166,12 +166,12 @@ class Bridge:
         else:
             self.print_terminal("Result of selection A: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
 
-    def Run_selection_B(self):
+    def Run_selection_B(self,mysigma):
         GM = self.GM
         before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
         before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
 
-        GM.Selection_B(sigma=self.sigma_selB)
+        GM.Selection_B(sigma=mysigma)
         if len(GM.list_sliced_time) == 0:
             self.print_terminal_colored("No data after selection B")
             GM.list_sliced_time = before_list_sliced_time
@@ -180,12 +180,12 @@ class Bridge:
             self.print_terminal("Result of selection B: {} cycles -> {} cycles".format(len(before_list_sliced_time),len(GM.list_sliced_time)))
 
     
-    def Run_selection_C(self):
+    def Run_selection_C(self,mysigma):
         GM = self.GM
         before_list_sliced_time = copy.deepcopy(GM.list_sliced_time)
         before_list_sliced_val = copy.deepcopy(GM.list_sliced_val)
 
-        GM.Selection_C(sigma=self.sigma_selC)
+        GM.Selection_C(sigma=mysigma)
         if len(GM.list_sliced_time) == 0:
             self.print_terminal_colored("No data after selection C")
             GM.list_sliced_time = before_list_sliced_time
@@ -276,14 +276,14 @@ class Bridge:
         return min(self.list_raw_time),max(self.list_raw_time),min(self.list_raw_amp),max(self.list_raw_amp)
 
     def get_parameter(self,):
-        return self.interpolation_step, self.time_for_1breath, self.datarate, self.sigma_selA, self.sigma_selB, self.sigma_selC
-    
-    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate, mysigma_A, mysigma_B, mysigma_C, mysel_order):
+        return self.interpolation_step, self.time_for_1breath, self.datarate, self.order_sigma, self.selec_order
+
+    def set_parameter(self,my_interpolation_step, my_time_for_1breath, my_datarate, mysigmas, mysel_order):
         self.interpolation_step = int(my_interpolation_step)
         self.time_for_1breath = float(my_time_for_1breath)
         self.datarate = float(my_datarate)
         self.index_range = self.datarate * self.time_for_1breath
-        self.sigma_selA = float(mysigma_A)
-        self.sigma_selB = float(mysigma_B)
-        self.sigma_selC = float(mysigma_C)
+        self.sigma_selA = float(mysigmas[0])
+        self.sigma_selB = float(mysigmas[1])
+        self.sigma_selC = float(mysigmas[2])
         self.selec_order = mysel_order
